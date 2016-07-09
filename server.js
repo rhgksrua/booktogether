@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 
 //app.use(favicon(__dirname + '/dist/favicon.ico'));
 
-//require('./config/passport')(passport);
+require('./config/passport')(passport);
 
 
 var port = process.env.PORT || 3000;
@@ -39,8 +39,8 @@ app.use(session({
     })
 }));
 
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.set('view engine', 'pug');
@@ -70,29 +70,33 @@ function redirectMiddleware(req, res, next) {
     next();
 }
 
-app.get('/auth/github/callback',
-    passport.authenticate('github', {failureRedirect: '/login'}),
-    function(req, res) {
-        var path = '/';
-        
-        if (req.session.redirect) {
-            path = path + req.session.redirect + '/';
-        }
-       
-        if (req.session.term) {
-            path = path + '?term=' + encodeURIComponent(req.session.term);
-        }
-        // Reset redirect from session
-        req.session.redirect = '';
-        req.session.term = '';
-        return res.redirect(path);
-    }
-);
-
 app.post('/logout', isLoggedInAJAX, function(req, res) {
     req.logout();
     res.json({status: 'logged out'});
 });
+
+const userRoute = require('./routes/userRoute.js')(passport);
+app.use('/user', userRoute);
+
+//app.post('/signup', passport.authenticate('local-signup'),
+//    function(req, res) {
+//        // user info in req.user
+//        console.log('req user', req.user);
+//        let userInfo = {
+//            email: req.user.email,
+//            first: req.user.first,
+//            last: req.user.last,
+//            username: req.user.username
+//        };
+//        res.json(userInfo);
+//    }
+//);
+//
+//app.post('/login', passport.authenticate('local-login'),
+//    function(req, res) {
+//        return res.json({status: 'login'});
+//    }
+//);
 
 app.get('/*', function(req, res) {
     res.render('index');

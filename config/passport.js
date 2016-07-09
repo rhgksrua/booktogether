@@ -2,7 +2,7 @@ var LocalStrategy = require('passport-local');
 var User = require('../models/User');
 
 module.exports = function(passport) {
-    passport.serializeuser(function(user, done) {
+    passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
     
@@ -18,12 +18,14 @@ module.exports = function(passport) {
         passReqToCallback: true
     },
     function(req, email, password, done) {
+        console.log('--- passed req', req.body);
         process.nextTick(function() {
             User.findOne({'local.email': email}, function(err, user) {
                 if (err) return done(err);
                 
                 if(user) {
                     // Email exists.
+                    
                     return done(null, false);
                 } else {
                     var newUser = new User();
@@ -31,12 +33,36 @@ module.exports = function(passport) {
                     newUser.local.password = newUser.generateHash(password);
                     newUser.local.first = req.body.first;
                     newUser.local.last = req.body.last;
+                    newUser.local.username = req.body.username;
                     
                     newUser.save(function(err) {
                         if (err) throw err;
+                        console.log('---- new user ', newUser);
                         return done(null, newUser);
                     });
                 }
+            });
+            
+        });
+    }));
+    
+    passport.use('local-login', new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true
+    },
+    function(req, email, password, done) {
+        process.nextTick(function() {
+            User.findOne({'local.email': email}, function(err, user) {
+                if (err) return done(err);
+                
+                if (!user) {
+                    return done(null, false);
+                }
+                if (!user.validPassword(password)) {
+                    return done(null, false);
+                }
+                return done(null, user);
             });
         });
     }));

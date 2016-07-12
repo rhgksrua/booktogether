@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var MongoStore = require('connect-mongo')(session);
 var favicon = require('serve-favicon');
 
+mongoose.Promise = require('bluebird');
+
 require('dotenv').config({silent: true});
 
 var app = express();
@@ -48,55 +50,9 @@ app.set('views', './templates');
 
 app.use(express.static(__dirname + '/build'));
 
-function isLoggedInAJAX(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        res.json({error: 'authentication failure'});
-    }
-}
-
-function saveTermMiddleware(req, res, next) {
-    if (req.query.term) {
-        req.session.term = req.query.term;
-    }
-    next();
-}
-
-function redirectMiddleware(req, res, next) {
-    if (req.query.redirect) {
-        req.session.redirect = req.query.redirect;
-    }
-    next();
-}
-
-app.post('/logout', isLoggedInAJAX, function(req, res) {
-    req.logout();
-    res.json({status: 'logged out'});
-});
 
 const userRoute = require('./routes/userRoute.js')(passport);
 app.use('/user', userRoute);
-
-//app.post('/signup', passport.authenticate('local-signup'),
-//    function(req, res) {
-//        // user info in req.user
-//        console.log('req user', req.user);
-//        let userInfo = {
-//            email: req.user.email,
-//            first: req.user.first,
-//            last: req.user.last,
-//            username: req.user.username
-//        };
-//        res.json(userInfo);
-//    }
-//);
-//
-//app.post('/login', passport.authenticate('local-login'),
-//    function(req, res) {
-//        return res.json({status: 'login'});
-//    }
-//);
 
 app.get('/*', function(req, res) {
     res.render('index');

@@ -1,13 +1,13 @@
 import React from 'react';
 
-class Home extends React.Component {
+class AllBooks extends React.Component {
     render() {
         return (
             <div>
-                <h3>BookTogether</h3>
+                All books here
             </div>
         );
     }
 }
 
-export default Home;
+export default AllBooks;

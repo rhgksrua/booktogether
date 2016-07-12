@@ -1,8 +1,11 @@
 import fetch from 'isomorphic-fetch';
 
-export const SIGN_UP = 'SIGN_UP';
-export const LOG_IN = 'LOG_IN';
-export const SET_USER_INFO = 'SET_USER_INFO';
+import {
+    SIGN_UP,
+    LOG_IN,
+    LOG_OUT,
+    ADD_USER_INFO
+} from './actionTypes';
 
 export const signUp = (userInfo) => {
     return {
@@ -13,8 +16,14 @@ export const signUp = (userInfo) => {
 
 export const addUserInfo = userInfo => {
     return {
-        type: SET_USER_INFO,
+        type: ADD_USER_INFO,
         userInfo
+    };
+};
+
+export const logOut = () => {
+    return {
+        type: LOG_OUT
     };
 };
 
@@ -38,6 +47,7 @@ export const signUpFetch = userInfo => {
             if (userInfo.error) {
                 throw new Error(userInfo.error);
             }
+            console.log('--- signup fetch', userInfo);
             dispatch(addUserInfo(userInfo));
         })
         .catch(err => {
@@ -73,3 +83,31 @@ export const logInFetch = userInfo => {
         });
     };
 };
+
+export const logOutFetch = () => {
+    return dispatch => {
+        return fetch(
+            `${window.location.protocol}//${window.location.host}/user/logout`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin',
+                method: 'post'
+            }
+        )
+        .then(data => {
+            return data.json();
+        })
+        .then(userInfo => {
+            if (userInfo.error) {
+                throw new Error(userInfo.error);
+            }
+            dispatch(logOut());
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+    };
+};
+

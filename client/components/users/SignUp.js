@@ -7,12 +7,14 @@ class SignUp extends React.Component {
             email: '',
             first: '',
             last: '',
-            password: ''
+            password: '',
+            username: ''
         };
         this.handleEmail = this.handleEmail.bind(this);
         this.handleFirst = this.handleFirst.bind(this);
         this.handleLast = this.handleLast.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
+        this.handleUsername = this.handleUsername.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleEmail(e) {

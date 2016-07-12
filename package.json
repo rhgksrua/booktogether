@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "c9": "mongod & node server.js"
+    "c9": "mongod & node server.js",
+    "dev:watch": "NODE_ENV=development nodemon server.js & webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "homepage": "https://github.com/rhgksrua/booktogether#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.4.1",
     "body-parser": "^1.15.0",
     "connect-mongo": "^1.1.0",
     "css-loader": "^0.23.1",

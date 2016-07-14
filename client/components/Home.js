@@ -5,6 +5,7 @@ class Home extends React.Component {
         return (
             <div>
                 <h3>BookTogether</h3>
+                <p>Share books with total strangers!</p>
             </div>
         );
     }

@@ -35,7 +35,7 @@ app.use(session({
     secret: 'booktogethersecret',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60 * 60 * 24 * 365 },
+    cookie: { maxAge: 60 * 60 * 24 * 365 * 1000},
     store: new MongoStore({
         mongooseConnection: mongoose.connection
     })
@@ -51,8 +51,10 @@ app.set('views', './templates');
 app.use(express.static(__dirname + '/build'));
 
 
-const userRoute = require('./routes/userRoute.js')(passport);
-app.use('/user', userRoute);
+const userRoutes = require('./routes/userRoutes')(passport);
+const bookRoutes = require('./routes/bookRoutes');
+app.use('/user', userRoutes);
+app.use('/books', bookRoutes);
 
 app.get('/*', function(req, res) {
     res.render('index');

@@ -3,7 +3,10 @@ import { searchBookFetch } from '../../actions/bookActions';
 import AddBook from './AddBook';
 
 const mapStateToProps = (state, props) => {
-    return {};
+    const { booksResult } = state;
+    return {
+        booksResult
+    };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {

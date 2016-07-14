@@ -7,12 +7,15 @@ import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import bookApp from '../reducers/bookApp';
 import Home from './Home';
-import App from './App';
+import AppContainer from './AppContainer';
 import SignUpContainer from './users/SignUpContainer';
 import LogInContainer from './users/LogInContainer';
 import AllBooksContainer from './books/AllBooksContainer';
 import UserBooksContainer from './books/UserBooksContainer';
 import AddBookContainer from './books/AddBookContainer';
+import BookDetailContainer from './books/BookDetailContainer';
+
+import '../styles/index.scss';
 
 const loggerMiddleware = createLogger();
 
@@ -21,12 +24,14 @@ let store = createStore(bookApp, applyMiddleware(thunkMiddleware, loggerMiddlewa
 ReactDOM.render((
     <Provider store={store}>
         <Router history={browserHistory}>
-            <Route path='/' component={App}>
+            <Route path='/' component={AppContainer}>
                 <IndexRoute component={Home} />
                 <Route path='/signup' component={SignUpContainer} />
                 <Route path='/login' component={LogInContainer} />
                 <Route path='/allbooks' component={AllBooksContainer} />
+                <Route path='/allbooks/:id' component={BookDetailContainer} />
                 <Route path='/mybooks' component={UserBooksContainer} />
+                <Route path='/mybooks/:id' component={BookDetailContainer} />
                 <Route path='/search' component={AddBookContainer} />
             </Route>
         </Router>

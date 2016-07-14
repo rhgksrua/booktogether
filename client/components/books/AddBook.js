@@ -24,9 +24,9 @@ class AddBook extends React.Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <input type='text' onChange={this.handleInput}/>
-                    <input type='submit' value='Add'/>
+                    <button className='btn waves-effect waves-light' type='submit' >Submit</button>
                 </form>
-                <BookList />
+                <BookList bookList={this.props.booksResult} add={true} remove={false} />
             </div>
         );
     }

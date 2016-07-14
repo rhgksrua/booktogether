@@ -1,4 +1,6 @@
 import fetch from 'isomorphic-fetch';
+import { browserHistory } from 'react-router';
+import { userBooksFetch } from './bookActions';
 
 import {
     SIGN_UP,
@@ -49,6 +51,7 @@ export const signUpFetch = userInfo => {
             }
             console.log('--- signup fetch', userInfo);
             dispatch(addUserInfo(userInfo));
+            browserHistory.push('/mybooks');
         })
         .catch(err => {
             console.warn(err);
@@ -76,7 +79,10 @@ export const logInFetch = userInfo => {
             if (userInfo.error) {
                 throw new Error(userInfo.error);
             }
-            dispatch(addUserInfo(userInfo));
+            console.log('---- login fetch', userInfo);
+            dispatch(userBooksFetch());
+            //dispatch(addUserInfo(userInfo));
+            browserHistory.push('/mybooks');
         })
         .catch(err => {
             console.warn(err);
@@ -104,6 +110,7 @@ export const logOutFetch = () => {
                 throw new Error(userInfo.error);
             }
             dispatch(logOut());
+            browserHistory.push('/login');
         })
         .catch(err => {
             console.warn(err);
@@ -111,3 +118,36 @@ export const logOutFetch = () => {
     };
 };
 
+
+export const checkLogInStatusFetch = (currentPath) => {
+    return dispatch => {
+        return fetch(
+            `${window.location.protocol}//${window.location.host}/user/status`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin',
+                method: 'post'
+            }
+        )
+        .then(data => {
+            return data.json();
+        })
+        .then(userInfo => {
+            if (userInfo.error) {
+                throw new Error(userInfo.error);
+            }
+            /*
+            if (currentPath === '/login' || currentPath === '/signup') {
+                browserHistory.push('/');
+            }
+            */
+            dispatch(addUserInfo(userInfo));
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+        
+    }
+}

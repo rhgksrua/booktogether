@@ -30,7 +30,7 @@ class LogIn extends React.Component {
             <div>
                 <h1>Log In</h1>
                 <form className='signup' onSubmit={this.handleSubmit}>
-                    <p>
+                    <div className='input-field col s6'>
                         <label htmlFor='email'>email</label>
                         <input 
                             type='text' 
@@ -38,8 +38,8 @@ class LogIn extends React.Component {
                             value={this.state.email} 
                             onChange={this.handleEmail}
                         />
-                    </p>
-                    <p>
+                    </div>
+                    <div className='input-field col s6'>
                         <label htmlFor='password'>password</label>
                         <input 
                             type='password' 
@@ -47,8 +47,8 @@ class LogIn extends React.Component {
                             value={this.state.password} 
                             onChange={this.handlePassword}
                         />
-                    </p>
-                    <input type='submit' value='log in' />
+                    </div>
+                    <button className='btn waves-effect waves-light' type='submit' value='sign up'>Submit</button>
                 </form>
             </div>
         );

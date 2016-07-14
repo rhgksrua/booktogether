@@ -49,9 +49,9 @@ class SignUp extends React.Component {
     render() {
         return (
             <div>
-                <h1>Sign Up</h1>
+                <h5>Sign Up</h5>
                 <form className='signup' onSubmit={this.handleSubmit}>
-                    <p>
+                    <div className='input-field'>
                         <label htmlFor='email'>email</label>
                         <input 
                             type='text' 
@@ -59,8 +59,8 @@ class SignUp extends React.Component {
                             value={this.state.email} 
                             onChange={this.handleEmail}
                         />
-                    </p>
-                    <p>
+                    </div>
+                    <div className='input-field'>
                         <label htmlFor='username'>username</label>
                         <input 
                             type='text' 
@@ -68,8 +68,8 @@ class SignUp extends React.Component {
                             value={this.state.username} 
                             onChange={this.handleUsername}
                         />
-                    </p>
-                    <p>
+                    </div>
+                    <div className='input-field'>
                         <label htmlFor='first'>first</label>
                         <input 
                             type='text' 
@@ -77,8 +77,8 @@ class SignUp extends React.Component {
                             value={this.state.first} 
                             onChange={this.handleFirst}
                         />
-                    </p>
-                    <p>
+                    </div>
+                    <div className='input-field'>
                         <label htmlFor='last'>last</label>
                         <input 
                             type='text' 
@@ -86,8 +86,8 @@ class SignUp extends React.Component {
                             value={this.state.last} 
                             onChange={this.handleLast}
                         />
-                    </p>
-                    <p>
+                    </div>
+                    <div className='input-field'>
                         <label htmlFor='password'>password</label>
                         <input 
                             type='password' 
@@ -95,8 +95,8 @@ class SignUp extends React.Component {
                             value={this.state.password} 
                             onChange={this.handlePassword}
                         />
-                    </p>
-                    <input type='submit' value='sign up' />
+                    </div>
+                    <button className='btn waves-effect waves-light' type='submit' value='sign up'>Submit</button>
                 </form>
             </div>
         );

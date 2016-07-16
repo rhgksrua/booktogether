@@ -13,6 +13,8 @@ require('dotenv').config({silent: true});
 
 var app = express();
 
+app.use(morgan('combined'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -27,9 +29,8 @@ var port = process.env.PORT || 3000;
 
 var MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || process.env.IP + "/booktogether";
 
-mongoose.connect(MONGO_URI);
 
-app.use(morgan('combined'));
+mongoose.connect(MONGO_URI);
 
 app.use(session({
     secret: 'booktogethersecret',
@@ -44,15 +45,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 app.set('view engine', 'pug');
 app.set('views', './templates');
 
 app.use(express.static(__dirname + '/build'));
 
-
 const userRoutes = require('./routes/userRoutes')(passport);
 const bookRoutes = require('./routes/bookRoutes');
+
 app.use('/user', userRoutes);
 app.use('/books', bookRoutes);
 
@@ -63,3 +63,7 @@ app.get('/*', function(req, res) {
 app.listen(port, function() {
     console.log('http://localhost:' + port);
 });
+
+
+
+

@@ -40,6 +40,12 @@ class BookDetail extends React.Component {
                 {this.props.use === 'requester' &&
                 <button className='waves-effect waves-light btn'>REQUEST</button>
                 }
+                <p className='btn-container'>
+                    <button className='btn'>Request</button>
+                </p>
+                <p>
+                    <button className='btn'>I Have this!</button>
+                </p>
             </div>
         );
     }

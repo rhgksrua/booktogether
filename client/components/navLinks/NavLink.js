@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-class MobileNavLink extends React.Component {
+class NavLink extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -21,8 +21,8 @@ class MobileNavLink extends React.Component {
     }
 }
 
-MobileNavLink.contextTypes = {
+NavLink.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 
-export default MobileNavLink;
+export default NavLink;

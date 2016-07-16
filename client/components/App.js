@@ -7,20 +7,17 @@ class App extends React.Component {
     constructor(props, context) {
         super(props);
         this.handleLogOut = this.handleLogOut.bind(this);
-        this.closeNav = this.closeNav.bind(this)
     }
     componentDidMount() {
          window.$(".button-collapse").sideNav();
          
          // check cookie for log in and get books if logged in
          this.props.getUserInfo();
-         //this.props.getAllBooks();
-    }
-    closeNav(e) {
-         window.$(".button-collapse").sideNav('hide');
+         this.props.getAllBooks();
     }
     handleLogOut(e) {
-        this.props.logout();
+         this.props.logout();
+         window.$(".button-collapse").sideNav('hide');
     }
     render() {
         const user = this.props.userInfo;
@@ -49,7 +46,9 @@ class App extends React.Component {
                             <NavLink to='/login' name='Log In' />
                             }
                             {user && user.username &&
-                            <NavLink to ='/logout' name='Log Out' />
+                            <li>
+                                <a onClick={this.handleLogOut}>Log Out</a>
+                            </li>
                             }
                         </ul>
                         <ul id='mobile-demo' className='side-nav'>
@@ -68,7 +67,9 @@ class App extends React.Component {
                             <MobileNavLink to='/login' name={'LOG IN'} />
                             }
                             {user && user.username &&
-                            <MobileNavLink to='/logout' name={'LOG OUT'} />
+                            <li>
+                                <a onClick={this.handleLogOut}>Log Out</a>
+                            </li>
                             }
                         </ul>
                     </div>

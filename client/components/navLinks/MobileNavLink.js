@@ -4,9 +4,9 @@ import { Link } from 'react-router';
 class MobileNavLink extends React.Component {
     constructor(props) {
         super(props);
-        this.closeNav = this.closeNav.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
-    closeNav() {
+    handleClick(e) {
          window.$(".button-collapse").sideNav('hide');
     }
     render() {
@@ -17,7 +17,7 @@ class MobileNavLink extends React.Component {
                     to={this.props.to}
                     activeClassName='active' 
                     onlyActiveOnIndex={this.props.onlyActiveOnIndex} 
-                    onClick={this.closeNav}
+                    onClick={this.handleClick}
                 >
                     {this.props.name}
                 </Link>

@@ -87,31 +87,31 @@
 
 	var _AppContainer2 = _interopRequireDefault(_AppContainer);
 
-	var _SignUpContainer = __webpack_require__(269);
+	var _SignUpContainer = __webpack_require__(271);
 
 	var _SignUpContainer2 = _interopRequireDefault(_SignUpContainer);
 
-	var _LogInContainer = __webpack_require__(271);
+	var _LogInContainer = __webpack_require__(273);
 
 	var _LogInContainer2 = _interopRequireDefault(_LogInContainer);
 
-	var _AllBooksContainer = __webpack_require__(273);
+	var _AllBooksContainer = __webpack_require__(275);
 
 	var _AllBooksContainer2 = _interopRequireDefault(_AllBooksContainer);
 
-	var _UserBooksContainer = __webpack_require__(278);
+	var _UserBooksContainer = __webpack_require__(280);
 
 	var _UserBooksContainer2 = _interopRequireDefault(_UserBooksContainer);
 
-	var _AddBookContainer = __webpack_require__(280);
+	var _AddBookContainer = __webpack_require__(282);
 
 	var _AddBookContainer2 = _interopRequireDefault(_AddBookContainer);
 
-	var _BookDetailContainer = __webpack_require__(282);
+	var _BookDetailContainer = __webpack_require__(284);
 
 	var _BookDetailContainer2 = _interopRequireDefault(_BookDetailContainer);
 
-	__webpack_require__(284);
+	__webpack_require__(286);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29338,11 +29338,11 @@
 
 	var _reactRouter = __webpack_require__(170);
 
-	var _MobileNavLink = __webpack_require__(288);
+	var _MobileNavLink = __webpack_require__(269);
 
 	var _MobileNavLink2 = _interopRequireDefault(_MobileNavLink);
 
-	var _NavLink = __webpack_require__(289);
+	var _NavLink = __webpack_require__(270);
 
 	var _NavLink2 = _interopRequireDefault(_NavLink);
 
@@ -29363,7 +29363,6 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
 
 	        _this.handleLogOut = _this.handleLogOut.bind(_this);
-	        _this.closeNav = _this.closeNav.bind(_this);
 	        return _this;
 	    }
 
@@ -29374,17 +29373,13 @@
 
 	            // check cookie for log in and get books if logged in
 	            this.props.getUserInfo();
-	            //this.props.getAllBooks();
-	        }
-	    }, {
-	        key: 'closeNav',
-	        value: function closeNav(e) {
-	            window.$(".button-collapse").sideNav('hide');
+	            this.props.getAllBooks();
 	        }
 	    }, {
 	        key: 'handleLogOut',
 	        value: function handleLogOut(e) {
 	            this.props.logout();
+	            window.$(".button-collapse").sideNav('hide');
 	        }
 	    }, {
 	        key: 'render',
@@ -29433,7 +29428,15 @@
 	                            _react2.default.createElement(_NavLink2.default, { to: '/search', name: 'Add Book' }),
 	                            user && !user.username && _react2.default.createElement(_NavLink2.default, { to: '/signup', name: 'Sign Up' }),
 	                            user && !user.username && _react2.default.createElement(_NavLink2.default, { to: '/login', name: 'Log In' }),
-	                            user && user.username && _react2.default.createElement(_NavLink2.default, { to: '/logout', name: 'Log Out' })
+	                            user && user.username && _react2.default.createElement(
+	                                'li',
+	                                null,
+	                                _react2.default.createElement(
+	                                    'a',
+	                                    { onClick: this.handleLogOut },
+	                                    'Log Out'
+	                                )
+	                            )
 	                        ),
 	                        _react2.default.createElement(
 	                            'ul',
@@ -29448,7 +29451,15 @@
 	                            _react2.default.createElement(_MobileNavLink2.default, { to: '/search', name: 'ADD BOOK' }),
 	                            user && !user.username && _react2.default.createElement(_MobileNavLink2.default, { to: '/signup', name: 'SIGN UP' }),
 	                            user && !user.username && _react2.default.createElement(_MobileNavLink2.default, { to: '/login', name: 'LOG IN' }),
-	                            user && user.username && _react2.default.createElement(_MobileNavLink2.default, { to: '/logout', name: 'LOG OUT' })
+	                            user && user.username && _react2.default.createElement(
+	                                'li',
+	                                null,
+	                                _react2.default.createElement(
+	                                    'a',
+	                                    { onClick: this.handleLogOut },
+	                                    'Log Out'
+	                                )
+	                            )
 	                        )
 	                    )
 	                ),
@@ -29498,11 +29509,148 @@
 	    value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(170);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MobileNavLink = function (_React$Component) {
+	    _inherits(MobileNavLink, _React$Component);
+
+	    function MobileNavLink(props) {
+	        _classCallCheck(this, MobileNavLink);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MobileNavLink).call(this, props));
+
+	        _this.handleClick = _this.handleClick.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(MobileNavLink, [{
+	        key: 'handleClick',
+	        value: function handleClick(e) {
+	            window.$(".button-collapse").sideNav('hide');
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var liActive = this.context.router.isActive;
+	            return _react2.default.createElement(
+	                'li',
+	                { className: liActive(this.props.to) ? '' : '' },
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    {
+	                        to: this.props.to,
+	                        activeClassName: 'active',
+	                        onlyActiveOnIndex: this.props.onlyActiveOnIndex,
+	                        onClick: this.handleClick
+	                    },
+	                    this.props.name
+	                )
+	            );
+	        }
+	    }]);
+
+	    return MobileNavLink;
+	}(_react2.default.Component);
+
+	MobileNavLink.contextTypes = {
+	    router: _react2.default.PropTypes.object.isRequired
+	};
+
+	exports.default = MobileNavLink;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(170);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var NavLink = function (_React$Component) {
+	    _inherits(NavLink, _React$Component);
+
+	    function NavLink(props) {
+	        _classCallCheck(this, NavLink);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(NavLink).call(this, props));
+	    }
+
+	    _createClass(NavLink, [{
+	        key: 'render',
+	        value: function render() {
+	            var liActive = this.context.router.isActive;
+	            return _react2.default.createElement(
+	                'li',
+	                { className: liActive(this.props.to) ? '' : '' },
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    {
+	                        to: this.props.to,
+	                        activeClassName: 'active',
+	                        onlyActiveOnIndex: this.props.onlyActiveOnIndex
+	                    },
+	                    this.props.name
+	                )
+	            );
+	        }
+	    }]);
+
+	    return NavLink;
+	}(_react2.default.Component);
+
+	NavLink.contextTypes = {
+	    router: _react2.default.PropTypes.object.isRequired
+	};
+
+	exports.default = NavLink;
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
 	var _reactRedux = __webpack_require__(232);
 
 	var _actions = __webpack_require__(264);
 
-	var _SignUp = __webpack_require__(270);
+	var _SignUp = __webpack_require__(272);
 
 	var _SignUp2 = _interopRequireDefault(_SignUp);
 
@@ -29525,7 +29673,7 @@
 	exports.default = SignUpContainer;
 
 /***/ },
-/* 270 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29718,7 +29866,7 @@
 	exports.default = SignUp;
 
 /***/ },
-/* 271 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29731,7 +29879,7 @@
 
 	var _actions = __webpack_require__(264);
 
-	var _LogIn = __webpack_require__(272);
+	var _LogIn = __webpack_require__(274);
 
 	var _LogIn2 = _interopRequireDefault(_LogIn);
 
@@ -29754,7 +29902,7 @@
 	exports.default = SignUpContainer;
 
 /***/ },
-/* 272 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29875,7 +30023,7 @@
 	exports.default = LogIn;
 
 /***/ },
-/* 273 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29888,7 +30036,7 @@
 
 	var _bookActions = __webpack_require__(267);
 
-	var _AllBooks = __webpack_require__(274);
+	var _AllBooks = __webpack_require__(276);
 
 	var _AllBooks2 = _interopRequireDefault(_AllBooks);
 
@@ -29913,7 +30061,7 @@
 	exports.default = AllBooksContainer;
 
 /***/ },
-/* 274 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29928,7 +30076,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _BookList = __webpack_require__(275);
+	var _BookList = __webpack_require__(277);
 
 	var _BookList2 = _interopRequireDefault(_BookList);
 
@@ -29983,7 +30131,7 @@
 	exports.default = AllBooks;
 
 /***/ },
-/* 275 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29998,7 +30146,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _BookContainer = __webpack_require__(276);
+	var _BookContainer = __webpack_require__(278);
 
 	var _BookContainer2 = _interopRequireDefault(_BookContainer);
 
@@ -30024,7 +30172,6 @@
 	        value: function render() {
 	            var _this2 = this;
 
-	            console.log('---- inside book list');
 	            var bookList = this.props.bookList ? this.props.bookList : [];
 	            var books = bookList.map(function (book) {
 
@@ -30057,7 +30204,7 @@
 	exports.default = BookList;
 
 /***/ },
-/* 276 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30070,7 +30217,7 @@
 
 	var _bookActions = __webpack_require__(267);
 
-	var _Book = __webpack_require__(277);
+	var _Book = __webpack_require__(279);
 
 	var _Book2 = _interopRequireDefault(_Book);
 
@@ -30098,7 +30245,7 @@
 	exports.default = BookContainer;
 
 /***/ },
-/* 277 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30202,7 +30349,7 @@
 	exports.default = Book;
 
 /***/ },
-/* 278 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30215,7 +30362,7 @@
 
 	var _bookActions = __webpack_require__(267);
 
-	var _UserBooks = __webpack_require__(279);
+	var _UserBooks = __webpack_require__(281);
 
 	var _UserBooks2 = _interopRequireDefault(_UserBooks);
 
@@ -30242,7 +30389,7 @@
 	exports.default = AllBooksContainer;
 
 /***/ },
-/* 279 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30257,7 +30404,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _BookList = __webpack_require__(275);
+	var _BookList = __webpack_require__(277);
 
 	var _BookList2 = _interopRequireDefault(_BookList);
 
@@ -30312,7 +30459,7 @@
 	exports.default = UserBooks;
 
 /***/ },
-/* 280 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30325,7 +30472,7 @@
 
 	var _bookActions = __webpack_require__(267);
 
-	var _AddBook = __webpack_require__(281);
+	var _AddBook = __webpack_require__(283);
 
 	var _AddBook2 = _interopRequireDefault(_AddBook);
 
@@ -30352,7 +30499,7 @@
 	exports.default = AddBookContainer;
 
 /***/ },
-/* 281 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30367,7 +30514,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _BookList = __webpack_require__(275);
+	var _BookList = __webpack_require__(277);
 
 	var _BookList2 = _interopRequireDefault(_BookList);
 
@@ -30435,7 +30582,7 @@
 	exports.default = AddBook;
 
 /***/ },
-/* 282 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30446,7 +30593,7 @@
 
 	var _reactRedux = __webpack_require__(232);
 
-	var _BookDetail = __webpack_require__(283);
+	var _BookDetail = __webpack_require__(285);
 
 	var _BookDetail2 = _interopRequireDefault(_BookDetail);
 
@@ -30473,7 +30620,7 @@
 	exports.default = BookDetailContainer;
 
 /***/ },
-/* 283 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30573,6 +30720,24 @@
 	                    'button',
 	                    { className: 'waves-effect waves-light btn' },
 	                    'REQUEST'
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    { className: 'btn-container' },
+	                    _react2.default.createElement(
+	                        'button',
+	                        { className: 'btn' },
+	                        'Request'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    _react2.default.createElement(
+	                        'button',
+	                        { className: 'btn' },
+	                        'I Have this!'
+	                    )
 	                )
 	            );
 	        }
@@ -30584,16 +30749,16 @@
 	exports.default = BookDetail;
 
 /***/ },
-/* 284 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(285);
+	var content = __webpack_require__(287);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(287)(content, {});
+	var update = __webpack_require__(289)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -30610,10 +30775,10 @@
 	}
 
 /***/ },
-/* 285 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(286)();
+	exports = module.exports = __webpack_require__(288)();
 	// imports
 
 
@@ -30624,7 +30789,7 @@
 
 
 /***/ },
-/* 286 */
+/* 288 */
 /***/ function(module, exports) {
 
 	/*
@@ -30680,7 +30845,7 @@
 
 
 /***/ },
-/* 287 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30930,143 +31095,6 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
-
-/***/ },
-/* 288 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(170);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var MobileNavLink = function (_React$Component) {
-	    _inherits(MobileNavLink, _React$Component);
-
-	    function MobileNavLink(props) {
-	        _classCallCheck(this, MobileNavLink);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MobileNavLink).call(this, props));
-
-	        _this.closeNav = _this.closeNav.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(MobileNavLink, [{
-	        key: 'closeNav',
-	        value: function closeNav() {
-	            window.$(".button-collapse").sideNav('hide');
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var liActive = this.context.router.isActive;
-	            return _react2.default.createElement(
-	                'li',
-	                { className: liActive(this.props.to) ? '' : '' },
-	                _react2.default.createElement(
-	                    _reactRouter.Link,
-	                    {
-	                        to: this.props.to,
-	                        activeClassName: 'active',
-	                        onlyActiveOnIndex: this.props.onlyActiveOnIndex,
-	                        onClick: this.closeNav
-	                    },
-	                    this.props.name
-	                )
-	            );
-	        }
-	    }]);
-
-	    return MobileNavLink;
-	}(_react2.default.Component);
-
-	MobileNavLink.contextTypes = {
-	    router: _react2.default.PropTypes.object.isRequired
-	};
-
-	exports.default = MobileNavLink;
-
-/***/ },
-/* 289 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(170);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var MobileNavLink = function (_React$Component) {
-	    _inherits(MobileNavLink, _React$Component);
-
-	    function MobileNavLink(props) {
-	        _classCallCheck(this, MobileNavLink);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MobileNavLink).call(this, props));
-	    }
-
-	    _createClass(MobileNavLink, [{
-	        key: 'render',
-	        value: function render() {
-	            var liActive = this.context.router.isActive;
-	            return _react2.default.createElement(
-	                'li',
-	                { className: liActive(this.props.to) ? '' : '' },
-	                _react2.default.createElement(
-	                    _reactRouter.Link,
-	                    {
-	                        to: this.props.to,
-	                        activeClassName: 'active',
-	                        onlyActiveOnIndex: this.props.onlyActiveOnIndex
-	                    },
-	                    this.props.name
-	                )
-	            );
-	        }
-	    }]);
-
-	    return MobileNavLink;
-	}(_react2.default.Component);
-
-	MobileNavLink.contextTypes = {
-	    router: _react2.default.PropTypes.object.isRequired
-	};
-
-	exports.default = MobileNavLink;
 
 /***/ }
 /******/ ]);

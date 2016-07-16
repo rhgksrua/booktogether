@@ -57,7 +57,6 @@ function handleAllBooks(req, res) {
 
 function handleMyBooks(req, res) {
     let user = req.user;
-    console.log('---- user', user);
     process.nextTick(function() {
         let query = {
             'owners.id': user._id
@@ -94,8 +93,6 @@ function handleMyBooks(req, res) {
 
 
 function handleAddBook(req, res) {
-    //console.log('in handle add book', req.body.book);
-    console.log('user', req.user);
     let user = req.user;
     let userBook = req.body.book;
     let query = {'id': req.body.book.id};

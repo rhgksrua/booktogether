@@ -6,7 +6,6 @@ class BookList extends React.Component {
         super(props);
     }
     render() {
-        console.log('---- inside book list');
         let bookList = this.props.bookList ? this.props.bookList : [];
         let books = bookList.map(book => {
             

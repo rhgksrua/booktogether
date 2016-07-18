@@ -6,7 +6,8 @@ import {
     ADD_MY_BOOK,
     ADD_ALL_MY_BOOKS,
     ADD_USER_INFO,
-    REMOVE_MY_BOOK
+    REMOVE_MY_BOOK,
+    UPDATE_BOOK
 } from './actionTypes';
 
 import { addUserInfo } from './actions';
@@ -189,9 +190,44 @@ export const removeMyBookFetch = id => {
             console.warn(err);
         });
     };
+};
+
+export const requestBook = book => {
+    return {
+        type: UPDATE_BOOK,
+        book
+    };
+};
+
+export const requestBookFetch = id => {
+    const URL = `${window.location.protocol}//${window.location.host}/books/request`;
+    return dispatch => {
+        return fetch(
+            URL,
+            {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({ id })
+            }
+        )
+        .then(data => {
+            return data.json();
+        })
+        .then(books => {
+            if (books.error) {
+                throw new Error(books.error);
+            }
+            console.log('--- requestBook response', books);
+            dispatch(requestBook(id));
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+    };
     
-}
-
-
+};
 
 

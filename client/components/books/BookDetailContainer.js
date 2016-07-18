@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-//import { searchBookFetch } from '../../actions/bookActions';
+import { requestBookFetch } from '../../actions/bookActions';
 import BookDetail from './BookDetail';
 
 const mapStateToProps = (state, props) => {
@@ -11,7 +11,11 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    return {};
+    return {
+        request: id => {
+            dispatch(requestBookFetch(id));
+        }
+    };
 };
 
 const BookDetailContainer = connect(

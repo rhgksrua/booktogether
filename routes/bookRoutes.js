@@ -10,6 +10,35 @@ router.put('/add', isLoggedInAJAX, handleAddBook);
 router.get('/me', isLoggedInAJAX, handleMyBooks);
 router.get('/all', handleAllBooks);
 router.delete('/remove', isLoggedInAJAX, handleRemove);
+router.post('/request', isLoggedInAJAX, handleRequestBook);
+
+function handleRequestBook(req, res) {
+    const user = req.user;
+    const id = req.body.id;
+    const query = {'id': id};
+    process.nextTick(function() {
+        Book.findOne(query, function(err, book) {
+            if (err) return res.json({error: 'db error'});
+            
+            if (!book) return res.json({error: 'book does not exist'});
+            
+            const userExists = book.requests.some(function(user) {
+                return user.id = id;
+            });
+            if (userExists) return res.json({error: 'user already requested this book'});
+            
+            book.requests.push({
+                id: user._id,
+                username: user.local.username
+            });
+            book.save(function(err, book) {
+                if (err) return res.json({error: 'db error'});
+                
+                return res.json({status: 'added user to requests'});
+            });
+        });
+    });
+}
 
 function handleRemove(req, res) {
     const userId = req.user._id;
@@ -47,9 +76,7 @@ function handleAllBooks(req, res) {
     };
     Book.find(query, projection, function(err, books) {
         if (err) return res.json({error: 'db error all books'});
-        
         if (!books) return res.json({books: []});
-        
         return res.json({books: books});
         
     });

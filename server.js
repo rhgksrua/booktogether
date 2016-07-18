@@ -5,7 +5,8 @@ var passport = require('passport');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var MongoStore = require('connect-mongo')(session);
-var favicon = require('serve-favicon');
+var mongo_express = require('mongo-express/lib/middleware');
+var mongo_express_config = require('./mongoExpressConfig')
 
 mongoose.Promise = require('bluebird');
 
@@ -55,6 +56,7 @@ const bookRoutes = require('./routes/bookRoutes');
 
 app.use('/user', userRoutes);
 app.use('/books', bookRoutes);
+app.use('/mongoexpress', mongo_express(mongo_express_config));
 
 app.get('/*', function(req, res) {
     res.render('index');

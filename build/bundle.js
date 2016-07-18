@@ -28449,6 +28449,7 @@
 	var ADD_MY_BOOK = exports.ADD_MY_BOOK = 'ADD_MY_BOOK';
 	var ADD_ALL_MY_BOOKS = exports.ADD_ALL_MY_BOOKS = 'ADD_ALL_MY_BOOKS';
 	var REMOVE_MY_BOOK = exports.REMOVE_MY_BOOK = 'REMOVE_MY_BOOK';
+	var UPDATE_BOOK = exports.UPDATE_BOOK = 'UPDATE_BOOK';
 
 /***/ },
 /* 262 */
@@ -29158,7 +29159,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.removeMyBookFetch = exports.removeMyBook = exports.userBooksFetch = exports.addAllMyBooks = exports.addMyBookFetch = exports.addMyBook = exports.searchBookFetch = exports.addSearchResults = exports.allBooksFetch = exports.addAllBooks = undefined;
+	exports.requestBookFetch = exports.requestBook = exports.removeMyBookFetch = exports.removeMyBook = exports.userBooksFetch = exports.addAllMyBooks = exports.addMyBookFetch = exports.addMyBook = exports.searchBookFetch = exports.addSearchResults = exports.allBooksFetch = exports.addAllBooks = undefined;
 
 	var _isomorphicFetch = __webpack_require__(265);
 
@@ -29314,6 +29315,37 @@
 	            }
 	            console.log('book fetch ajax response', books.books);
 	            dispatch(removeMyBook(id));
+	        }).catch(function (err) {
+	            console.warn(err);
+	        });
+	    };
+	};
+
+	var requestBook = exports.requestBook = function requestBook(book) {
+	    return {
+	        type: _actionTypes.UPDATE_BOOK,
+	        book: book
+	    };
+	};
+
+	var requestBookFetch = exports.requestBookFetch = function requestBookFetch(id) {
+	    var URL = window.location.protocol + '//' + window.location.host + '/books/request';
+	    return function (dispatch) {
+	        return (0, _isomorphicFetch2.default)(URL, {
+	            method: 'post',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            credentials: 'same-origin',
+	            body: JSON.stringify({ id: id })
+	        }).then(function (data) {
+	            return data.json();
+	        }).then(function (books) {
+	            if (books.error) {
+	                throw new Error(books.error);
+	            }
+	            console.log('--- requestBook response', books);
+	            dispatch(requestBook(id));
 	        }).catch(function (err) {
 	            console.warn(err);
 	        });
@@ -30415,6 +30447,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import UserBookList from './UserBookList';
+
 
 	var UserBooks = function (_React$Component) {
 	    _inherits(UserBooks, _React$Component);
@@ -30593,6 +30627,8 @@
 
 	var _reactRedux = __webpack_require__(232);
 
+	var _bookActions = __webpack_require__(267);
+
 	var _BookDetail = __webpack_require__(285);
 
 	var _BookDetail2 = _interopRequireDefault(_BookDetail);
@@ -30608,11 +30644,13 @@
 	        books: books
 	    };
 	};
-	//import { searchBookFetch } from '../../actions/bookActions';
-
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	    return {};
+	    return {
+	        request: function request(id) {
+	            dispatch((0, _bookActions.requestBookFetch)(id));
+	        }
+	    };
 	};
 
 	var BookDetailContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_BookDetail2.default);
@@ -30635,6 +30673,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _RequesterDetailContainer = __webpack_require__(294);
+
+	var _RequesterDetailContainer2 = _interopRequireDefault(_RequesterDetailContainer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30653,6 +30695,9 @@
 
 	        console.log('--- inside book detail props', props);
 	        _this.getBook = _this.getBook.bind(_this);
+	        _this.checkUserBooks = _this.checkUserBooks.bind(_this);
+	        _this.userOwned = _this.userOwned.bind(_this);
+	        _this.handleRequest = _this.handleRequest.bind(_this);
 	        return _this;
 	    }
 
@@ -30660,16 +30705,39 @@
 	        key: 'getBook',
 	        value: function getBook(id) {
 	            var books = this.props.books;
-	            console.log('--- books', this.props);
 	            return books.find(function (book) {
 	                return book.id === id;
 	            });
 	        }
 	    }, {
+	        key: 'checkUserBooks',
+	        value: function checkUserBooks(id) {
+	            var books = this.props.userBooks;
+	            return books.find(function (book) {
+	                return book.id === id;
+	            });
+	        }
+	    }, {
+	        key: 'userOwned',
+	        value: function userOwned() {
+	            if (this.checkUserBooks(this.props.params.id)) {
+	                return 'OWNED';
+	            }
+	            return '';
+	        }
+	    }, {
+	        key: 'handleRequest',
+	        value: function handleRequest() {
+	            // send book id to server
+	            this.props.request(this.props.params.id);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var book = this.getBook(this.props.params.id);
-	            console.log(book);
+	            var id = this.props.params.id;
+	            var book = this.getBook(id);
+	            var userOwned = this.userOwned();
+	            console.log('--- userOwned', userOwned);
 	            if (!book) {
 	                return _react2.default.createElement(
 	                    'div',
@@ -30689,7 +30757,12 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            { className: 'card-title' },
-	                            book.volumeInfo.title
+	                            book.volumeInfo.title,
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'badge' },
+	                                userOwned
+	                            )
 	                        ),
 	                        _react2.default.createElement(
 	                            'p',
@@ -30721,24 +30794,16 @@
 	                    { className: 'waves-effect waves-light btn' },
 	                    'REQUEST'
 	                ),
-	                _react2.default.createElement(
+	                !userOwned && _react2.default.createElement(
 	                    'p',
 	                    { className: 'btn-container' },
 	                    _react2.default.createElement(
 	                        'button',
-	                        { className: 'btn' },
-	                        'Request'
+	                        { className: 'btn', onClick: this.handleRequest },
+	                        'WANT'
 	                    )
 	                ),
-	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'btn' },
-	                        'I Have this!'
-	                    )
-	                )
+	                userOwned && _react2.default.createElement(_RequesterDetailContainer2.default, null)
 	            );
 	        }
 	    }]);
@@ -30783,7 +30848,7 @@
 
 
 	// module
-	exports.push([module.id, "i.material-icons {\n  vertical-align: middle; }\n\n.user-info {\n  padding: 3px; }\n  .user-info p {\n    margin-left: 10px; }\n\n.button-collapse {\n  margin-left: 10px; }\n\n.remove-book {\n  cursor: pointer; }\n", ""]);
+	exports.push([module.id, "i.material-icons {\n  vertical-align: middle; }\n\n.user-info {\n  padding: 3px; }\n  .user-info p {\n    margin-left: 10px; }\n\n.button-collapse {\n  margin-left: 10px; }\n\n.remove-book {\n  cursor: pointer; }\n\nspan .badge {\n  color: white;\n  background-color: #26a69a;\n  border-radius: 3px; }\n", ""]);
 
 	// exports
 
@@ -31095,6 +31160,286 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 290 */,
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _reactRedux = __webpack_require__(232);
+
+	var _bookActions = __webpack_require__(267);
+
+	var _Book = __webpack_require__(292);
+
+	var _Book2 = _interopRequireDefault(_Book);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state, props) {
+	    var reqBooks = state.reqBooks;
+
+	    return {
+	        reqBooks: reqBooks
+	    };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	    return {
+	        addMyBook: function addMyBook(book) {
+	            console.log('sending to server', book);
+	            dispatch((0, _bookActions.addMyBookFetch)(book));
+	        },
+	        removeMyBook: function removeMyBook(id) {
+	            console.log('removing book');
+	            dispatch((0, _bookActions.removeMyBookFetch)(id));
+	        }
+	    };
+	};
+
+	var BookContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Book2.default);
+
+	exports.default = BookContainer;
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(170);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Book = function (_React$Component) {
+	    _inherits(Book, _React$Component);
+
+	    function Book(props) {
+	        _classCallCheck(this, Book);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Book).call(this, props));
+	    }
+
+	    _createClass(Book, [{
+	        key: 'render',
+	        value: function render() {
+	            var book = this.props.bookInfo;
+	            if (!book) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'NO BOOKS YET'
+	                );
+	            }
+	            console.log('---- user books props', this.props);
+	            return _react2.default.createElement(
+	                'li',
+	                { className: 'collection-item avatar' },
+	                book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail && _react2.default.createElement('img', { className: 'circle', src: book.volumeInfo.imageLinks.smallThumbnail }),
+	                !book.volumeInfo.imageLinks && _react2.default.createElement('img', { className: 'circle', src: 'http://placekitten.com/200/300' }),
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'title' },
+	                    book.volumeInfo.title
+	                ),
+	                this.props.add && _react2.default.createElement(
+	                    'p',
+	                    { onClick: this.handleAddBook },
+	                    'ADD'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { className: 'btn' },
+	                    'TRADE'
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Book;
+	}(_react2.default.Component);
+
+	exports.default = Book;
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _BookContainer = __webpack_require__(291);
+
+	var _BookContainer2 = _interopRequireDefault(_BookContainer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RequesterDetail = function (_React$Component) {
+	    _inherits(RequesterDetail, _React$Component);
+
+	    function RequesterDetail(props) {
+	        _classCallCheck(this, RequesterDetail);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(RequesterDetail).call(this, props));
+	    }
+
+	    _createClass(RequesterDetail, [{
+	        key: 'render',
+	        value: function render() {
+	            /*
+	            let books = this.props.reqBooks.map(book => {
+	                return (
+	                    <li>
+	                        <BookContainer book={book} />
+	                    </li>
+	                );
+	            });
+	            */
+	            var requesters = this.props.requesters.map(function (requester) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    null,
+	                    'requester list'
+	                );
+	            });
+	            return _react2.default.createElement(
+	                'div',
+	                { className: '' },
+	                _react2.default.createElement(
+	                    'h4',
+	                    null,
+	                    'Requests'
+	                ),
+	                _react2.default.createElement(
+	                    'ul',
+	                    { className: 'requester-list' },
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            'h5',
+	                            null,
+	                            'User 1'
+	                        ),
+	                        _react2.default.createElement(
+	                            'ul',
+	                            null,
+	                            _react2.default.createElement(
+	                                'li',
+	                                null,
+	                                'List of books owned by requester'
+	                            )
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'ul',
+	                    null,
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            'h5',
+	                            null,
+	                            'User 2'
+	                        ),
+	                        _react2.default.createElement(
+	                            'ul',
+	                            null,
+	                            _react2.default.createElement(
+	                                'li',
+	                                null,
+	                                'List of books owned by requester'
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return RequesterDetail;
+	}(_react2.default.Component);
+
+	exports.default = RequesterDetail;
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _reactRedux = __webpack_require__(232);
+
+	var _bookActions = __webpack_require__(267);
+
+	var _RequesterDetail = __webpack_require__(293);
+
+	var _RequesterDetail2 = _interopRequireDefault(_RequesterDetail);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state, props) {
+	    return props;
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	    return {
+	        addMyBook: function addMyBook(book) {
+	            console.log('sending to server', book);
+	            dispatch((0, _bookActions.addMyBookFetch)(book));
+	        },
+	        removeMyBook: function removeMyBook(id) {
+	            console.log('removing book');
+	            dispatch((0, _bookActions.removeMyBookFetch)(id));
+	        }
+	    };
+	};
+
+	var RequesterDetailContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_RequesterDetail2.default);
+
+	exports.default = RequesterDetailContainer;
 
 /***/ }
 /******/ ]);

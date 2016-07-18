@@ -10,10 +10,10 @@ import Home from './Home';
 import AppContainer from './AppContainer';
 import SignUpContainer from './users/SignUpContainer';
 import LogInContainer from './users/LogInContainer';
-import AllBooksContainer from './books/AllBooksContainer';
-import UserBooksContainer from './books/UserBooksContainer';
-import AddBookContainer from './books/AddBookContainer';
-import BookDetailContainer from './books/BookDetailContainer';
+import AllBooksContainer from './books/allBooks/AllBooksContainer';
+import UserBooksContainer from './books/userBooks/UserBooksContainer';
+import AddBookContainer from './books/addBooks/AddBookContainer';
+import BookDetailContainer from './books/addBooks/BookDetailContainer';
 
 import '../styles/index.scss';
 

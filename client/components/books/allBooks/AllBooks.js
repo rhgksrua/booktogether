@@ -1,6 +1,6 @@
 import React from 'react';
 
-import BookList from './BookList';
+import AllBookList from './AllBookList';
 
 class AllBooks extends React.Component {
     constructor(props) {

@@ -1,18 +1,20 @@
-var express = require('express');
-var morgan = require('morgan');
-var mongoose = require('mongoose');
-var passport = require('passport');
-var session = require('express-session');
-var bodyParser = require('body-parser');
-var MongoStore = require('connect-mongo')(session);
-var mongo_express = require('mongo-express/lib/middleware');
-var mongo_express_config = require('./mongoExpressConfig')
+'use strict';
+
+const express = require('express');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const MongoStore = require('connect-mongo')(session);
+const mongo_express = require('mongo-express/lib/middleware');
+const mongo_express_config = require('./mongoExpressConfig')
 
 mongoose.Promise = require('bluebird');
 
 require('dotenv').config({silent: true});
 
-var app = express();
+const app = express();
 
 app.use(morgan('combined'));
 
@@ -26,15 +28,19 @@ app.use(bodyParser.urlencoded({
 require('./config/passport')(passport);
 
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-var MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || process.env.IP + "/booktogether";
-
+let MONGO_URI;
+if (process.env.NODE_ENV === 'development') {
+    MONGO_URI = 'localhost:27017/booktogether';
+} else {
+    MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || process.env.IP + "/booktogether";
+}
 
 mongoose.connect(MONGO_URI);
 
 app.use(session({
-    secret: 'booktogethersecret',
+    secret: 'booktogethersecret', // need to replace this with env var
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 60 * 60 * 24 * 365 * 1000},

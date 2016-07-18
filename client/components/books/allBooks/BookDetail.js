@@ -1,5 +1,5 @@
 import React from 'react';
-import RequesterDetailContainer from './bookDetail/RequesterDetailContainer.js';
+import RequesterDetailContainer from './requests/RequesterDetailContainer.js';
 
 class BookDetail extends React.Component {
     constructor(props) {

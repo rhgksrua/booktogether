@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { allBooksFetch } from '../../actions/bookActions';
+import { allBooksFetch } from '../../../actions/bookActions';
 import AllBooks from './AllBooks';
 
 const mapStateToProps = (state, props) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 //import UserBookList from './UserBookList';
-import BookList from './BookList';
+import UserBookList from './UserBookList';
 
 class UserBooks extends React.Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class UserBooks extends React.Component {
         return (
             <div>
                 <h5>Your Books</h5>
-                <BookList 
+                <UserBookList 
                     bookList={this.props.userBooks} 
                     use={'owner'}
                     add={false} 

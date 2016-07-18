@@ -1,5 +1,11 @@
 import React from 'react';
-import BookList from './BookList';
+import ReactDOM from 'react-dom';
+import AddBookList from './AddBookList';
+
+/*
+ * Should be accessible by only authenticated users.
+ *
+ */
 
 class AddBook extends React.Component {
     constructor(props) {
@@ -9,6 +15,9 @@ class AddBook extends React.Component {
         this.state = {
             title: ''
         };
+    }
+    componentDidMount() {
+        ReactDOM.findDOMNode(this.refs.userInput).focus();
     }
     handleInput(e) {
         this.setState({
@@ -23,10 +32,10 @@ class AddBook extends React.Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <input type='text' onChange={this.handleInput}/>
+                    <input ref='userInput' type='text' onChange={this.handleInput}/>
                     <button className='btn waves-effect waves-light' type='submit' >Submit</button>
                 </form>
-                <BookList bookList={this.props.booksResult} add={true} remove={false} />
+                <AddBookList bookList={this.props.booksResult} add={true} remove={false} />
             </div>
         );
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import BookContainer from './BookContainer';
 
-class BookList extends React.Component {
+class UserBookList extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -9,15 +9,7 @@ class BookList extends React.Component {
         let bookList = this.props.bookList ? this.props.bookList : [];
         let books = bookList.map(book => {
             return (
-                <BookContainer 
-                    key={book.id} 
-                    bookInfo={book} 
-                    add={this.props.add} 
-                    remove={this.props.remove} 
-                    detail={this.props.detail} 
-                    link={this.props.link}
-                    owner={this.props.owner}
-                />
+                <BookContainer key={book.id} bookInfo={book} />
             );
         });
         return (
@@ -32,4 +24,6 @@ class BookList extends React.Component {
     }
 }
 
-export default BookList;
+export default UserBookList;
+
+

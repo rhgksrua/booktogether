@@ -1,9 +1,9 @@
 import React from 'react';
+import RequesterDetailContainer from './requests/RequesterDetailContainer.js';
 
 class BookDetail extends React.Component {
     constructor(props) {
         super(props);
-        console.log('--- inside book detail props', props);
         this.getBook = this.getBook.bind(this);
         this.checkUserBooks = this.checkUserBooks.bind(this);
         this.userOwned = this.userOwned.bind(this);
@@ -67,9 +67,11 @@ class BookDetail extends React.Component {
                     <button className='btn' onClick={this.handleRequest}>WANT</button>
                 </p>
                 }
+                <RequesterDetailContainer bookId={this.props.params.id} />
             </div>
         );
     }
 }
 
 export default BookDetail;
+

@@ -11,9 +11,10 @@ import AppContainer from './AppContainer';
 import SignUpContainer from './users/SignUpContainer';
 import LogInContainer from './users/LogInContainer';
 import AllBooksContainer from './books/allBooks/AllBooksContainer';
+import AllBookDetailContainer from './books/allBooks/BookDetailContainer';
 import UserBooksContainer from './books/userBooks/UserBooksContainer';
+import UserBookDetailContainer from './books/userBooks/BookDetailContainer';
 import AddBookContainer from './books/addBooks/AddBookContainer';
-import BookDetailContainer from './books/addBooks/BookDetailContainer';
 
 import '../styles/index.scss';
 
@@ -26,13 +27,13 @@ ReactDOM.render((
         <Router history={browserHistory}>
             <Route path='/' component={AppContainer}>
                 <IndexRoute component={Home} />
-                <Route path='/signup' component={SignUpContainer} />
-                <Route path='/login' component={LogInContainer} />
-                <Route path='/allbooks' component={AllBooksContainer} />
-                <Route path='/allbooks/:id' component={BookDetailContainer} />
-                <Route path='/mybooks' component={UserBooksContainer} />
-                <Route path='/mybooks/:id' component={BookDetailContainer} />
-                <Route path='/search' component={AddBookContainer} />
+                <Route path='/signup'        component={SignUpContainer} />
+                <Route path='/login'         component={LogInContainer} />
+                <Route path='/allbooks'      component={AllBooksContainer} />
+                <Route path='/allbooks/:id'  component={AllBookDetailContainer} />
+                <Route path='/mybooks'       component={UserBooksContainer} />
+                <Route path='/mybooks/:id'   component={UserBookDetailContainer} />
+                <Route path='/search'        component={AddBookContainer} />
             </Route>
         </Router>
     </Provider>

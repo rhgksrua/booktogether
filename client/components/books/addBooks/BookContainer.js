@@ -1,12 +1,9 @@
 import { connect } from 'react-redux';
-import { addMyBookFetch, removeMyBookFetch } from '../../../../actions/bookActions';
-import RequesterDetail from './RequesterDetail';
+import { addMyBookFetch, removeMyBookFetch } from '../../../actions/bookActions';
+import Book from './Book';
 
 const mapStateToProps = (state, props) => {
-    const { userBooks } = state;
-    return {
-        userBooks
-    };
+    return props;
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -22,9 +19,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     };
 };
 
-const RequesterDetailContainer = connect(
+const BookContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(RequesterDetail);
+)(Book);
 
-export default RequesterDetailContainer;
+export default BookContainer;
+

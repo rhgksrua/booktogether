@@ -6,22 +6,24 @@ class RequesterDetail extends React.Component {
         super(props);
     }
     render() {
-        /*
-        let books = this.props.reqBooks.map(book => {
-            return (
-                <li>
-                    <BookContainer book={book} />
-                </li>
-            );
-        });
-        */
-        let requesters = this.props.requesters.map(requester => {
-            return (
-                <li>
-                    requester list
-                </li>
-            );
-        })
+        
+
+        console.log('--- user books', this.props.userBooks);
+
+        console.log('--- book id from request detail', this.props.bookId);
+        try {
+            let requesters = this.props.requesters.map(requester => {
+                return (
+                    <li>
+                        requester list
+                    </li>
+                );
+            })
+        }
+        catch (e) {
+            console.log('requesters error');
+            console.error(e);
+        }
         return (
             <div className=''>
                 <h4>Requests</h4>

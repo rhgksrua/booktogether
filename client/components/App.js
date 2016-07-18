@@ -22,7 +22,7 @@ class App extends React.Component {
     render() {
         const user = this.props.userInfo;
         const books = this.props.userBooks;
-        console.log('--- total num of user books', books);
+        //console.log('--- total num of user books', books);
         return (
             <div className='container'>
                 <header>

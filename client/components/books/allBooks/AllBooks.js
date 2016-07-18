@@ -14,7 +14,7 @@ class AllBooks extends React.Component {
         return (
             <div>
                 <h5>ALL BOOKS</h5>
-                <BookList 
+                <AllBookList 
                     bookList={books} 
                     add={false} 
                     remove={false} 

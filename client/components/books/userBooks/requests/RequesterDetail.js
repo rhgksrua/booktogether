@@ -1,5 +1,6 @@
 import React from 'react';
 import BookContainer from './BookContainer';
+import Requester from './Requester';
 
 class RequesterDetail extends React.Component {
     constructor(props) {
@@ -27,10 +28,13 @@ class RequesterDetail extends React.Component {
         return (
             <div className=''>
                 <h4>Requests</h4>
+                <Requester />
                 <ul className='requester-list'>
+                    {/* requester  */}
                     <li>
                         <h5>User 1</h5>
                         <ul>
+                            {/* requester book */}
                             <li>List of books owned by requester</li>
                         </ul>
                     </li>

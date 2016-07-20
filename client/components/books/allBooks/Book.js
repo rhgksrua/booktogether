@@ -7,6 +7,7 @@ class Book extends React.Component {
         this.handleAddBook = this.handleAddBook.bind(this);
         this.handleRemoveBook = this.handleRemoveBook.bind(this);
         this.handleDetail = this.handleDetail.bind(this);
+        this.hasRequested = this.hasRequested.bind(this);
     }
     handleAddBook(e) {
         this.props.addMyBook(this.props.bookInfo);
@@ -19,9 +20,22 @@ class Book extends React.Component {
     handleDetail(e) {
         return;
     }
+    hasRequested() {
+        const requesters = this.props.bookInfo.requests;
+        return requesters.some(requester => {
+            return requester.username === this.props.userInfo.username;
+        });
+    }
     render() {
+        
         let book = this.props.bookInfo;
-        console.log('---- user books props', this.props)
+        let requesters = this.props.bookInfo.requests;
+        let hasRequested = false;
+        if (requesters.length !== 0) {
+            // check if book has been requested by user
+            hasRequested = this.hasRequested();
+        }
+        console.log('hasrequested', hasRequested);
         return (
             <li className='collection-item avatar'>
                 {book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail &&
@@ -30,20 +44,17 @@ class Book extends React.Component {
                 {!book.volumeInfo.imageLinks &&
                 <img className='circle' src='http://placekitten.com/200/300' />
                 }
-                <span className='title'>{book.volumeInfo.title}</span>
-                {this.props.add &&
-                <p onClick={this.handleAddBook}>ADD</p>
-                }
-                {this.props.remove &&
+                <span className='title'>{book.volumeInfo.title}
+                    {hasRequested &&
+                    <span className='badge'>You have requested this book</span>
+                    }
+                </span>
                 <p>
                     <a className='remove-book' onClick={this.handleRemoveBook}>REMOVE</a>
                 </p>
-                }
-                {this.props.detail &&
                 <p>
                     <Link to={`/${this.props.link}/${book.id}`}>DETAIL</Link>
                 </p>
-                }
             </li>
         );
     }

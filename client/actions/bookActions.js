@@ -7,7 +7,8 @@ import {
     ADD_ALL_MY_BOOKS,
     ADD_USER_INFO,
     REMOVE_MY_BOOK,
-    UPDATE_BOOK
+    UPDATE_BOOK,
+    REMOVE_REQUEST
 } from './actionTypes';
 
 import { addUserInfo } from './actions';
@@ -192,14 +193,15 @@ export const removeMyBookFetch = id => {
     };
 };
 
-export const requestBook = book => {
+export const requestBook = (id, username) => {
     return {
         type: UPDATE_BOOK,
-        book
+        id,
+        username
     };
 };
 
-export const requestBookFetch = id => {
+export const requestBookFetch = (id, username) => {
     const URL = `${window.location.protocol}//${window.location.host}/books/request`;
     return dispatch => {
         return fetch(
@@ -221,7 +223,8 @@ export const requestBookFetch = id => {
                 throw new Error(books.error);
             }
             console.log('--- requestBook response', books);
-            dispatch(requestBook(id));
+            console.log('**** username', username);
+            dispatch(requestBook(id, username));
         })
         .catch(err => {
             console.warn(err);
@@ -230,4 +233,41 @@ export const requestBookFetch = id => {
     
 };
 
+export const removeRequest = (id, username) => {
+    return {
+        type: REMOVE_REQUEST,
+        id,
+        username
+    };
+}
+
+export const removeRequestFetch = (id, username) => {
+    const URL = `${window.location.protocol}//${window.location.host}/books/removerequest`;
+    return dispatch => {
+        return fetch(
+            URL,
+            {
+                method: 'delete',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({ id })
+            }
+        )
+        .then(data => {
+            return data.json();
+        })
+        .then(status => {
+            if (status.error) {
+                throw new Error(books.error);
+            }
+            console.log('--- requestBook response', status);
+            dispatch(removeRequest(id, username));
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+    };
+}
 

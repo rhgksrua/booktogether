@@ -8,6 +8,8 @@ class BookDetail extends React.Component {
         this.checkUserBooks = this.checkUserBooks.bind(this);
         this.userOwned = this.userOwned.bind(this);
         this.handleRequest = this.handleRequest.bind(this);
+        this.handleRemoveRequest = this.handleRemoveRequest.bind(this);
+        this.hasRequested = this.hasRequested.bind(this);
     }
     getBook(id) {
         let books = this.props.books;
@@ -29,19 +31,36 @@ class BookDetail extends React.Component {
     }
     handleRequest() {
         // send book id to server
-        this.props.request(this.props.params.id);
+        this.props.request(this.props.params.id, this.props.userInfo.username);
+    }
+    handleRemoveRequest() {
+        this.props.removeRequest(this.props.params.id, this.props.userInfo.username);
+    }
+    hasRequested(book) {
+        const requesters = book.requests;
+        return requesters.some(requester => {
+            console.log('***** userinfo', this.props.userInfo);
+            return requester.username === this.props.userInfo.username;
+        });
     }
     render() {
         let id = this.props.params.id;
         let book = this.getBook(id);
         let userOwned = this.userOwned();
-        console.log('--- userOwned', userOwned)
         if (!book) {
             return (
                 <div className='progress'>
                     <div className='indeterminate'></div>
                 </div>
             );
+        }
+        // Book found or added through ajax
+        console.log('--- book', book)
+        let requesters = book.requests;
+        let hasRequested = false;
+        if (requesters.length !== 0) {
+            // check if book has been requested by user
+            hasRequested = this.hasRequested(book);
         }
         return (
             <div className=''>
@@ -51,21 +70,17 @@ class BookDetail extends React.Component {
                         <p>Book Info</p>
                     </div>
                 </div>
-                {/* mybooks */}
-                {this.props.use === 'owner' &&
-                <ul className='collection with-header'>
-                    <li className='collection-header'><h5>Requests</h5></li>
-                    <li className='collection-item'>Name of requester</li>
-                </ul>
-                }
-                {this.props.use === 'requester' &&
-                <button className='waves-effect waves-light btn'>REQUEST</button>
-                }
                 {/* All books */}
-                {!userOwned &&
+                {!userOwned && !hasRequested &&
                 <p className='btn-container'>
                     <button className='btn' onClick={this.handleRequest}>WANT</button>
                 </p>
+                }
+                {hasRequested && 
+                <div>
+                    <p className=''>You have requested this book!</p>
+                    <button className='btn' onClick={this.handleRemoveRequest}>REMOVE</button>
+                </div>
                 }
             </div>
         );

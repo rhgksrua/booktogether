@@ -6,15 +6,38 @@ import {
     ADD_SEARCH_RESULTS,
     ADD_MY_BOOK,
     ADD_ALL_MY_BOOKS,
-    REMOVE_MY_BOOK
+    REMOVE_MY_BOOK,
+    REMOVE_REQUEST,
+    UPDATE_BOOK
 } from '../actions/actionTypes';
 
 function books(state = [], action) {
+    let newBooks = [];
     switch(action.type) {
         case ADD_ALL_BOOKS:
             return action.books;
         case ADD_MY_BOOK:
             return state.concat(action.book);
+        case REMOVE_REQUEST:
+            newBooks = state.map(book => {
+                if (book.id === action.id) {
+                    let newReq = book.requests.filter(req => {
+                        return req.username !== action.username;
+                    });
+                    book.requests = newReq;
+                }
+                return book;
+            });
+            return newBooks;
+        case UPDATE_BOOK:
+            newBooks = state.map(book => {
+                if (book.id === action.id) {
+                    let newReq = book.requests.concat({username: action.username});
+                    book.requests = newReq;
+                }
+                return book;
+            });
+            return newBooks;
         default:
             return state;
     }

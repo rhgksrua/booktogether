@@ -1,51 +1,32 @@
 import React from 'react';
 import BookContainer from './BookContainer';
-import Requester from './Requester';
+import RequesterContainer from './RequesterContainer';
 
 class RequesterDetail extends React.Component {
     constructor(props) {
         super(props);
     }
     render() {
-        
-
-        console.log('--- user books', this.props.userBooks);
-
-        console.log('--- book id from request detail', this.props.bookId);
-        try {
-            let requesters = this.props.requesters.map(requester => {
-                return (
-                    <li>
-                        requester list
-                    </li>
-                );
-            })
+        let book = this.props.bookInfo;
+        let requesters = book.requests;
+        if (requesters.length === 0) {
+            return (
+                <div className=''>
+                    <h4>Requests</h4>
+                    <p>NO ONE WANTS YOUR BOOK!!!</p>
+                </div>
+            );
         }
-        catch (e) {
-            console.log('requesters error');
-            console.error(e);
-        }
+        let allRequesters = requesters.map(requester => {
+            return (
+                <RequesterContainer key={requester.username} requester={requester.username} />
+            );
+        });
         return (
             <div className=''>
                 <h4>Requests</h4>
-                <Requester />
-                <ul className='requester-list'>
-                    {/* requester  */}
-                    <li>
-                        <h5>User 1</h5>
-                        <ul>
-                            {/* requester book */}
-                            <li>List of books owned by requester</li>
-                        </ul>
-                    </li>
-                </ul>
                 <ul>
-                    <li>
-                        <h5>User 2</h5>
-                        <ul>
-                            <li>List of books owned by requester</li>
-                        </ul>
-                    </li>
+                    {allRequesters}
                 </ul>
             </div>
         );

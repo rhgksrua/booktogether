@@ -35,7 +35,7 @@ class App extends React.Component {
                     <div className='nav-wrapper'>
                         <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
                         <ul id='nav-mobile' className='right hide-on-med-and-down'>
-                            <NavLink to='/' name='BookTogether' />
+                            <NavLink to='/' name='BookTogether' onlyActiveOnIndex={true} />
                             <NavLink to='/allbooks' name='All Books' />
                             <NavLink to='/mybooks' name='My Books' />
                             <NavLink to='/search' name='Add Book' />

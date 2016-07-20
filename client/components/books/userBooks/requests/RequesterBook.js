@@ -7,7 +7,7 @@ class RequesterBook extends React.Component {
     render() {
         return (
             <li>
-                <p>Name of the book</p>
+                {this.props.bookTitle}
             </li>
         );
     }

@@ -11,6 +11,33 @@ router.get('/me', isLoggedInAJAX, handleMyBooks);
 router.get('/all', handleAllBooks);
 router.delete('/remove', isLoggedInAJAX, handleRemove);
 router.post('/request', isLoggedInAJAX, handleRequestBook);
+router.delete('/removerequest', isLoggedInAJAX, handleRemoveRequest);
+
+function handleRemoveRequest(req, res) {
+    // user
+    const user = req.user;
+    // bood id
+    const bookId = req.body.id;
+    const query = {id: bookId};
+    Book.findOne(query, function(err, book) {
+        if (err) return res.json({error: 'db error'});
+
+        if (!book) return res.json({error: 'book does not exist'});
+
+        const newRequests = book.requests.filter(request => {
+            console.log(request.username, user.local.username);
+            return request.username !== user.local.username;
+        });
+        console.log(newRequests);
+
+        book.requests = newRequests;
+        book.save(function(err, book) {
+            console.log('removed request', book.requests);
+            if (err) return ({error: 'db error'});
+            return res.json({status: 'removed request'});
+        });
+    });
+}
 
 function handleRequestBook(req, res) {
     const user = req.user;
@@ -22,8 +49,8 @@ function handleRequestBook(req, res) {
             
             if (!book) return res.json({error: 'book does not exist'});
             
-            const userExists = book.requests.some(function(user) {
-                return user.id = id;
+            const userExists = book.requests.some(function(request) {
+                return request.id === user._id.toString();
             });
             if (userExists) return res.json({error: 'user already requested this book'});
             
@@ -72,7 +99,8 @@ function handleAllBooks(req, res) {
         'id': 1,
         'selfLink': 1,
         'volumeInfo': 1,
-        'owners': 1
+        'owners.username': 1,
+        'requests.username': 1
     };
     Book.find(query, projection, function(err, books) {
         if (err) return res.json({error: 'db error all books'});
@@ -93,7 +121,7 @@ function handleMyBooks(req, res) {
             'id': 1,
             'selfLink': 1,
             'volumeInfo': 1,
-            'requests': 1
+            'requests.username': 1
         };
         Book.find(query, projection).exec()
             .then(function(book) {
@@ -107,8 +135,6 @@ function handleMyBooks(req, res) {
                     username: req.user.local.username
                 };
                 return res.json({books: book, userInfo: userInfo});
-                
-                
             })
             .catch(function(err) {
                 console.log('db error', err);
@@ -116,6 +142,9 @@ function handleMyBooks(req, res) {
             });
          
     });
+
+    function getRequesters() {
+    }
 }
 
 

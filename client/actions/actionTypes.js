@@ -11,3 +11,4 @@ export const ADD_MY_BOOK = 'ADD_MY_BOOK';
 export const ADD_ALL_MY_BOOKS = 'ADD_ALL_MY_BOOKS';
 export const REMOVE_MY_BOOK = 'REMOVE_MY_BOOK';
 export const UPDATE_BOOK = 'UPDATE_BOOK';
+export const REMOVE_REQUEST = 'REMOVE_REQUEST';

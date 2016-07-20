@@ -3,10 +3,11 @@ import { requestBookFetch } from '../../../actions/bookActions';
 import BookDetail from './BookDetail';
 
 const mapStateToProps = (state, props) => {
-    const { userBooks, books } = state;
+    const { userInfo, userBooks, books } = state;
     return {
         userBooks,
-        books
+        books,
+        userInfo
     };
 };
 

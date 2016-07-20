@@ -6,9 +6,9 @@ class NavLink extends React.Component {
         super(props);
     }
     render() {
-        const liActive = this.context.router.isActive;
+        const isActive = this.context.router.isActive;
         return (
-            <li className={liActive(this.props.to) ? '' : ''}>
+            <li className={isActive(this.props.to, this.props.onlyActiveOnIndex) ? 'active' : ''}>
                 <Link 
                     to={this.props.to}
                     activeClassName='active' 

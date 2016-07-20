@@ -21,7 +21,7 @@ class Book extends React.Component {
     }
     render() {
         let book = this.props.bookInfo;
-        console.log('---- user books props', this.props)
+        //console.log('---- user books props', this.props)
         return (
             <li className='collection-item avatar'>
                 {book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail &&

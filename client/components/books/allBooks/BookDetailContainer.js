@@ -1,19 +1,23 @@
 import { connect } from 'react-redux';
-import { requestBookFetch } from '../../../actions/bookActions';
+import { removeRequestFetch, requestBookFetch } from '../../../actions/bookActions';
 import BookDetail from './BookDetail';
 
 const mapStateToProps = (state, props) => {
-    const { userBooks, books } = state;
+    const { userBooks, books, userInfo } = state;
     return {
         userBooks,
-        books
+        books,
+        userInfo
     };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        request: id => {
-            dispatch(requestBookFetch(id));
+        request: (id, username) => {
+            dispatch(requestBookFetch(id, username));
+        },
+        removeRequest: (id, username) => {
+            dispatch(removeRequestFetch(id, username));
         }
     };
 };

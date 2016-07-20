@@ -67,7 +67,12 @@ class BookDetail extends React.Component {
                 <div className='card'>
                     <div className='card-content'>
                         <span className='card-title'>{book.volumeInfo.title}<span className='badge'>{userOwned}</span></span>
-                        <p>Book Info</p>
+                        {book.volumeInfo.pageCount &&
+                        <p>{book.volumeInfo.pageCount} pages</p>
+                        }
+                        {book.volumeInfo.publishedDate &&
+                        <p>{book.volumeInfo.publishedDate}</p>
+                        }
                     </div>
                 </div>
                 {/* All books */}

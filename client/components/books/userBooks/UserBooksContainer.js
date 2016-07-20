@@ -16,8 +16,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         getUserBooks: () => {
             dispatch(userBooksFetch());
         },
-        removeRequest: id => {
-            dispatch(removeRequestFetch(id));
+        removeRequest: (id, username) => {
+            dispatch(removeRequestFetch(id, username));
         }
     };
 };

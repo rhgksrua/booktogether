@@ -50,9 +50,6 @@ class Book extends React.Component {
                     }
                 </span>
                 <p>
-                    <a className='remove-book' onClick={this.handleRemoveBook}>REMOVE</a>
-                </p>
-                <p>
                     <Link to={`/${this.props.link}/${book.id}`}>DETAIL</Link>
                 </p>
             </li>

@@ -21,12 +21,10 @@ class UserBooks extends React.Component {
         });
     }
     removeRequest(id) {
-        console.log('--- id', id);
-        this.props.removeRequest(id);
+        this.props.removeRequest(id, this.props.userInfo.username);
     }
     render() {
         let reqBooks = this.getRequests();
-        console.log('--- reqbooks', reqBooks);
         const allReqBooks = reqBooks.map(book => {
             return (
                 <li key={book.id}>

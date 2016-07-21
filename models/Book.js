@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-var bookSchema = mongoose.Schema({
+const bookSchema = mongoose.Schema({
     eTag: String,
     id: String,
     selfLink: String,

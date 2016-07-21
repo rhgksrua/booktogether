@@ -1,5 +1,5 @@
 import React from 'react';
-import RequesterBook from './RequesterBook';
+import RequesterBookContainer from './RequesterBookContainer';
 
 class Requester extends React.Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class Requester extends React.Component {
         });
         let requesterBooks = requesterBook.map(book => {
             return (
-                <RequesterBook key={book.id} bookTitle={book.volumeInfo.title} />
+                <RequesterBookContainer key={book.id} bookTitle={book.volumeInfo.title} bookId={book.id} requester={this.props.requester}  currentBookId={this.props.bookId} />
             );
         });
         return (

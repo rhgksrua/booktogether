@@ -12,6 +12,12 @@ router.get('/all', handleAllBooks);
 router.delete('/remove', isLoggedInAJAX, handleRemove);
 router.post('/request', isLoggedInAJAX, handleRequestBook);
 router.delete('/removerequest', isLoggedInAJAX, handleRemoveRequest);
+router.put('/trade', isLoggedInAJAX, handleTrade);
+
+function handleTrade(req, res) {
+    console.log('--- tradeobj', req.body);
+    res.json({status: 'trading...'});
+}
 
 function handleRemoveRequest(req, res) {
     // user

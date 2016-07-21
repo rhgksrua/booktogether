@@ -8,7 +8,8 @@ import {
     ADD_USER_INFO,
     REMOVE_MY_BOOK,
     UPDATE_BOOK,
-    REMOVE_REQUEST
+    REMOVE_REQUEST,
+    TRADE
 } from './actionTypes';
 
 import { addUserInfo } from './actions';
@@ -271,3 +272,39 @@ export const removeRequestFetch = (id, username) => {
     };
 }
 
+export const trade = tradeObj => {
+    return {
+        type: TRADE,
+        tradeObj
+    };
+}
+
+export const tradeFetch = tradeObj => {
+    const URL = `${window.location.protocol}//${window.location.host}/books/trade`;
+    return dispatch => {
+        return fetch(
+            URL,
+            {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(tradeObj)
+            }
+        )
+        .then(data => {
+            return data.json();
+        })
+        .then(status => {
+            if (status.error) {
+                throw new Error(books.error);
+            }
+            console.log('--- trade response', status);
+            dispatch(trade(tradeObj));
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+    };
+}

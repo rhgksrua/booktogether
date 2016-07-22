@@ -2,6 +2,8 @@
 
 const express = require('express');
 const Book = require('../models/Book');
+const User = require('../models/User');
+const Promise = require('bluebird');
 
 const router = express.Router();
 const isLoggedInAJAX = require('../utils/middlewares').isLoggedInAJAX;
@@ -13,10 +15,39 @@ router.delete('/remove', isLoggedInAJAX, handleRemove);
 router.post('/request', isLoggedInAJAX, handleRequestBook);
 router.delete('/removerequest', isLoggedInAJAX, handleRemoveRequest);
 router.put('/trade', isLoggedInAJAX, handleTrade);
+router.put('/tradetest', handleTrade);
 
 function handleTrade(req, res) {
-    console.log('--- tradeobj', req.body);
-    res.json({status: 'trading...'});
+    // destructuring not supported in nodejs version < 6
+    //console.log('--- tradeobj', req.body);
+    const owner = req.body.owner;
+    const ownerBookId = req.body.ownerBookId;
+    const requester = req.body.requester;
+    const requesterBookId = req.body.requesterBookId;
+    const a = User.findOne({'local.username': owner}).exec();
+    const b = User.findOne({'local.username': requester}).exec();
+    Promise.all([a, b]).then(function(values) {
+        if (!values[0] || !values[1]) {
+            console.log('user does not exist');
+            throw new Error('user does not exist');
+        }
+        return values;
+    })
+    .then(function(users) {
+        const ownerBookQuery = Book.findOne({'id': ownerBookId}).exec();
+        const requesterBookQuery = Book.findOne({'id': requesterBookId}).exec();
+
+        return Promise.all([ownerBookQuery, requesterBookQuery]);
+    })
+    .then(function(books) {
+        console.log(books);
+        return res.json({books: books});
+    })
+    .catch(function(err) {
+        console.log(err);
+        return res.json({error: 'error'});
+    });
+    //res.json({status: 'trading...'});
 }
 
 function handleRemoveRequest(req, res) {

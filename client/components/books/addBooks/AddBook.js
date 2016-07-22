@@ -11,8 +11,6 @@ import AddInput from './AddInput';
 class AddBook extends React.Component {
     constructor(props) {
         super(props);
-        this.handleInput = this.handleInput.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             title: ''
         };

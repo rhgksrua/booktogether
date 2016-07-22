@@ -12,15 +12,17 @@ const bookSchema = mongoose.Schema({
     owners: [ 
         {
             id: String,
+            username: String,
             date: { type: Date, default: Date.now },
-            username: String
+            trade: { type: Boolean, default: false }
         }
     ],
     requests: [
         {
             id: String,
             username: String,
-            date: { type: Date, default: Date.now }
+            date: { type: Date, default: Date.now },
+            trade: { type: Boolean, default: false }
         }
     ]
 });

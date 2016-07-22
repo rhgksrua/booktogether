@@ -3,6 +3,7 @@
 const express = require('express');
 const Book = require('../models/Book');
 const User = require('../models/User');
+const Trade = require('../models/Trade');
 const Promise = require('bluebird');
 
 const router = express.Router();
@@ -24,6 +25,13 @@ function handleTrade(req, res) {
     const ownerBookId = req.body.ownerBookId;
     const requester = req.body.requester;
     const requesterBookId = req.body.requesterBookId;
+    let requesterId;
+
+    // Basic serverside validation
+    if (!owner || !ownerBookId || !requester || !requesterBookId) {
+        return res.json({error: 'missing body'});
+    }
+
     const a = User.findOne({'local.username': owner}).exec();
     const b = User.findOne({'local.username': requester}).exec();
     Promise.all([a, b]).then(function(values) {
@@ -31,17 +39,35 @@ function handleTrade(req, res) {
             console.log('user does not exist');
             throw new Error('user does not exist');
         }
+        requesterId = values[1]._id;
         return values;
     })
     .then(function(users) {
-        const ownerBookQuery = Book.findOne({'id': ownerBookId}).exec();
-        const requesterBookQuery = Book.findOne({'id': requesterBookId}).exec();
+        const ownerBookQuery = Book.findOne({'id': ownerBookId, 'owners.username': owner}).exec();
+        const requesterBookQuery = Book.findOne({'id': requesterBookId, 'owners.username': requester}).exec();
 
         return Promise.all([ownerBookQuery, requesterBookQuery]);
     })
     .then(function(books) {
-        console.log(books);
-        return res.json({books: books});
+        const tradeInfo = {
+            owner: {
+                id: req.user.id,
+                username: owner,
+                bookId: ownerBookId
+            },
+            requester: {
+                id: requesterId,
+                username: requester,
+                bookId: requesterBookId
+            }
+        }
+        const newTrade = new Trade(tradeInfo);
+        const tradeQuery = newTrade.save();
+        return tradeQuery;
+    })
+    .then(function(val) {
+        console.log(val);
+        return res.json({status: 'trade submitted'});
     })
     .catch(function(err) {
         console.log(err);

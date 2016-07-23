@@ -39,7 +39,6 @@ class BookDetail extends React.Component {
     hasRequested(book) {
         const requesters = book.requests;
         return requesters.some(requester => {
-            console.log('***** userinfo', this.props.userInfo);
             return requester.username === this.props.userInfo.username;
         });
     }
@@ -55,7 +54,6 @@ class BookDetail extends React.Component {
             );
         }
         // Book found or added through ajax
-        console.log('--- book', book)
         let requesters = book.requests;
         let hasRequested = false;
         if (requesters.length !== 0) {

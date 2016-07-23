@@ -43,12 +43,28 @@ function handleTrade(req, res) {
         return values;
     })
     .then(function(users) {
-        const ownerBookQuery = Book.findOne({'id': ownerBookId, 'owners.username': owner}).exec();
-        const requesterBookQuery = Book.findOne({'id': requesterBookId, 'owners.username': requester}).exec();
+        // Get books for trade
+        const ownerQuery = {
+            'id': ownerBookId,
+            'owners.username': owner
+        };
+        const ownerDoc = {
+            $set: {'owners.$.trade': true}
+        };
+        const ownerBookQuery = Book.findOneAndUpdate(ownerQuery, ownerDoc).exec();
 
+        const requesterQuery = {
+            'id': requesterBookId,
+            'owners.username': requester
+        };
+        const requesterDoc = {
+            $set: {'owners.$.trade': true}
+        };
+        const requesterBookQuery = Book.findOneAndUpdate(requesterQuery, requesterDoc).exec();
         return Promise.all([ownerBookQuery, requesterBookQuery]);
     })
     .then(function(books) {
+        // Save trade info
         const tradeInfo = {
             owner: {
                 id: req.user.id,
@@ -65,8 +81,9 @@ function handleTrade(req, res) {
         const tradeQuery = newTrade.save();
         return tradeQuery;
     })
-    .then(function(val) {
-        console.log(val);
+    .then(function(trade) {
+        // Update user books
+        console.log(trade);
         return res.json({status: 'trade submitted'});
     })
     .catch(function(err) {

@@ -13,6 +13,9 @@ class UserBooks extends React.Component {
     getRequests() {
         const books = this.props.books;
         return books.filter(book => {
+            if (!book.requests) {
+                return false;
+            }
             const hasRequested = book.requests.some(req => {
                 return req.username === this.props.userInfo.username;
             });

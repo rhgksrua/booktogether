@@ -17,6 +17,11 @@ function books(state = [], action) {
         case ADD_ALL_BOOKS:
             return action.books;
         case ADD_MY_BOOK:
+            // check for dup
+            const exists = state.some(book => {
+                return book.id === action.book.id;
+            });
+            if (exists) return state;
             return state.concat(action.book);
         case REMOVE_REQUEST:
             newBooks = state.map(book => {
@@ -46,6 +51,10 @@ function books(state = [], action) {
 function userBooks(state = [], action) {
     switch(action.type) {
         case ADD_MY_BOOK:
+            const exists = state.some(book => {
+                return book.id === action.book.id;
+            });
+            if (exists) return state;
             return state.concat(action.book);
         case ADD_ALL_MY_BOOKS:
             return action.books;

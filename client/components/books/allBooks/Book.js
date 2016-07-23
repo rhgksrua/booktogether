@@ -31,11 +31,10 @@ class Book extends React.Component {
         let book = this.props.bookInfo;
         let requesters = this.props.bookInfo.requests;
         let hasRequested = false;
-        if (requesters.length !== 0) {
+        if (requesters && requesters.length !== 0) {
             // check if book has been requested by user
             hasRequested = this.hasRequested();
         }
-        console.log('hasrequested', hasRequested);
         return (
             <li className='collection-item avatar'>
                 {book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail &&

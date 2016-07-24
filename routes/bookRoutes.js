@@ -20,7 +20,6 @@ router.put('/tradetest', handleTrade);
 
 function handleTrade(req, res) {
     // destructuring not supported in nodejs version < 6
-    //console.log('--- tradeobj', req.body);
     const owner = req.body.owner;
     const ownerBookId = req.body.ownerBookId;
     const requester = req.body.requester;
@@ -83,14 +82,12 @@ function handleTrade(req, res) {
     })
     .then(function(trade) {
         // Update user books
-        console.log(trade);
-        return res.json({status: 'trade submitted'});
+        return res.json(trade);
     })
     .catch(function(err) {
         console.log(err);
         return res.json({error: 'error'});
     });
-    //res.json({status: 'trading...'});
 }
 
 function handleRemoveRequest(req, res) {

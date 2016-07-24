@@ -23,10 +23,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-//app.use(favicon(__dirname + '/dist/favicon.ico'));
-
 require('./config/passport')(passport);
-
 
 const port = process.env.PORT || 3000;
 

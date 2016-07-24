@@ -20,10 +20,8 @@ class RequesterBook extends React.Component {
     }
     render() {
         return (
-            <li>
-                <p>{this.props.userInfo.username} wants</p>
+            <li className='collection-item'>
                 <p>{this.props.bookTitle}</p>
-                <p>requester is {this.props.requester}</p>
                 <button className='btn' onClick={this.handleTrade}>TRADE</button>
             </li>
         );

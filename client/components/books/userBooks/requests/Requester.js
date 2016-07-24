@@ -20,8 +20,8 @@ class Requester extends React.Component {
         });
         return (
             <li>
-                <h5>{this.props.requester}</h5>
-                <ul>
+                <h5>From <span className='request-username'>{this.props.requester}:</span></h5>
+                <ul className='collection'>
                     {requesterBooks}
                 </ul>
             </li>

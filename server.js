@@ -7,8 +7,6 @@ const passport = require('passport');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const MongoStore = require('connect-mongo')(session);
-const mongo_express = require('mongo-express/lib/middleware');
-const mongo_express_config = require('./mongoExpressConfig')
 
 mongoose.Promise = require('bluebird');
 
@@ -30,6 +28,10 @@ const port = process.env.PORT || 3000;
 let MONGO_URI;
 if (process.env.NODE_ENV === 'development') {
     MONGO_URI = 'localhost:27017/booktogether';
+    // mongodb webview
+    const mongo_express = require('mongo-express/lib/middleware');
+    const mongo_express_config = require('./mongoExpressConfig')
+    app.use('/mongoexpress', mongo_express(mongo_express_config));
 } else {
     MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || process.env.IP + "/booktogether";
 }
@@ -59,7 +61,7 @@ const bookRoutes = require('./routes/bookRoutes');
 
 app.use('/user', userRoutes);
 app.use('/books', bookRoutes);
-app.use('/mongoexpress', mongo_express(mongo_express_config));
+
 
 app.get('/*', function(req, res) {
     res.render('index');

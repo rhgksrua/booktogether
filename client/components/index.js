@@ -15,6 +15,7 @@ import AllBookDetailContainer from './books/allBooks/BookDetailContainer';
 import UserBooksContainer from './books/userBooks/UserBooksContainer';
 import UserBookDetailContainer from './books/userBooks/BookDetailContainer';
 import AddBookContainer from './books/addBooks/AddBookContainer';
+import MeContainer from './users/MeContainer';
 
 import '../styles/index.scss';
 
@@ -34,6 +35,7 @@ ReactDOM.render((
                 <Route path='/mybooks'       component={UserBooksContainer} />
                 <Route path='/mybooks/:id'   component={UserBookDetailContainer} />
                 <Route path='/search'        component={AddBookContainer} />
+                <Route path='/me'            component={MeContainer} />
             </Route>
         </Router>
     </Provider>

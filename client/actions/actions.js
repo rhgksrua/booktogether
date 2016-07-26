@@ -6,7 +6,8 @@ import {
     SIGN_UP,
     LOG_IN,
     LOG_OUT,
-    ADD_USER_INFO
+    ADD_USER_INFO,
+    ADD_ADDRESS
 } from './actionTypes';
 
 export const signUp = (userInfo) => {
@@ -22,6 +23,36 @@ export const addUserInfo = userInfo => {
         userInfo
     };
 };
+
+export const addAddressFetch = address => {
+    return dispatch => {
+        return fetch(
+            `${window.location.protocol}//${window.location.host}/user/address`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin',
+                method: 'put',
+                body: JSON.stringify(address)
+            }
+        )
+        .then(data => {
+            return data.json();
+        })
+        .then(userInfo => {
+            if (userInfo.error) {
+                throw new Error(userInfo.error);
+            }
+            dispatch(addUserInfo(userInfo));
+            browserHistory.push('/mybooks');
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+    };
+
+}
 
 export const logOut = () => {
     return {
@@ -81,7 +112,6 @@ export const logInFetch = userInfo => {
             }
             console.log('---- login fetch', userInfo);
             dispatch(userBooksFetch());
-            //dispatch(addUserInfo(userInfo));
             browserHistory.push('/mybooks');
         })
         .catch(err => {

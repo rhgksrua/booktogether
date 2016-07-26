@@ -2,21 +2,60 @@
 
 const express = require('express');
 const router = express.Router();
+const User = require('../models/User');
 const isLoggedInAJAX = require('../utils/middlewares').isLoggedInAJAX;
 
 module.exports = function(passport) {
     router.post('/signup', handleSignUpFailure, handleSignUpSuccess);
     router.post('/login', passport.authenticate('local-login'), handleLogInSuccess);
     router.post('/logout', isLoggedInAJAX, handleLogOut);
+    router.put('/address', isLoggedInAJAX, handleAddAddress);
     
     return router;
+
+    function handleAddAddress(req, res) {
+        const address =  req.body;
+        console.log('--- address', address);
+        const userId = req.user._id;
+        const query = {
+            '_id': userId
+        };
+        const update = {
+            'local.street': address.street,
+            'local.city': address.city,
+            'local.zip': address.zip
+        };
+        const options = {
+            'new': true
+        };
+        User.findOneAndUpdate(query, update, options, function(err, doc) {
+            if (err) return res.json({error: 'db error'});
+            //console.log(doc);
+            const userInfo = {
+                email: req.user.local.email,
+                first: req.user.local.first,
+                last: req.user.local.last,
+                username: req.user.local.username,
+                street: address.street,
+                city: address.city,
+                zip: address.zip
+            };
+            console.log(userInfo);
+            return res.json(doc);
+        });
+    }
     
     function handleLogInSuccess(req, res) {
+        const user = req.user.local;
+        console.log('-- user', user);
         let userInfo = {
             email: req.user.local.email,
             first: req.user.local.first,
             last: req.user.local.last,
-            username: req.user.local.username
+            username: req.user.local.username,
+            street: req.user.local.street,
+            city: user.city,
+            zip: user.zip
         };
         return res.json(userInfo);
     }

@@ -76,7 +76,13 @@ class App extends React.Component {
                 </nav>
                 <div className='card-panel user-info'>
                     {user && user.username &&
-                    <p>Hi, {user.username}. You own {books.length} books.</p>
+                    <div>
+                        <p>Hi, <Link to='/me'>{user.username}</Link>. You own {books.length} books.&nbsp;&nbsp;
+                        {user && !user.street &&
+                            <Link to='/me'>Need your address to trade!</Link>
+                        }
+                        </p>
+                    </div>
                     }
                     {user && !user.username &&
                     <p>Welcome! Sign In to start!</p>

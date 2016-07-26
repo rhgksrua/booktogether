@@ -45,7 +45,8 @@ function handleTrade(req, res) {
         // Get books for trade
         const ownerQuery = {
             'id': ownerBookId,
-            'owners.username': owner
+            'owners.username': owner,
+            'owners.trade': { $ne: true }
         };
         const ownerDoc = {
             $set: {'owners.$.trade': true}
@@ -54,7 +55,8 @@ function handleTrade(req, res) {
 
         const requesterQuery = {
             'id': requesterBookId,
-            'owners.username': requester
+            'owners.username': requester,
+            'owners.trade': { $ne: true }
         };
         const requesterDoc = {
             $set: {'owners.$.trade': true}
@@ -63,6 +65,12 @@ function handleTrade(req, res) {
         return Promise.all([ownerBookQuery, requesterBookQuery]);
     })
     .then(function(books) {
+        if (!books[0]) {
+            throw new Error('owner book up for trade');
+        }
+        if (!books[1]) {
+            throw new Error('requester book up for trade');
+        }
         // Save trade info
         const tradeInfo = {
             owner: {
@@ -85,8 +93,8 @@ function handleTrade(req, res) {
         return res.json(trade);
     })
     .catch(function(err) {
-        console.log(err);
-        return res.json({error: 'error'});
+        console.log(err.message);
+        return res.json({error: err.message});
     });
 }
 
@@ -206,10 +214,13 @@ function handleMyBooks(req, res) {
                     return res.json({status: 'empty'});
                 }
                 let userInfo = {
-                    email: req.user.local.email,
-                    first: req.user.local.first,
-                    last: req.user.local.last,
-                    username: req.user.local.username
+                    email: user.local.email,
+                    first: user.local.first,
+                    last: user.local.last,
+                    username: user.local.username,
+                    street: user.local.street,
+                    city: user.local.city,
+                    zip: user.local.zip
                 };
                 return res.json({books: book, userInfo: userInfo});
             })

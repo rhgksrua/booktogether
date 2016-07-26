@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import {
     ADD_USER_INFO,
+    ADD_ADDRESS,
     LOG_OUT,
     ADD_ALL_BOOKS,
     ADD_SEARCH_RESULTS,
@@ -8,7 +9,8 @@ import {
     ADD_ALL_MY_BOOKS,
     REMOVE_MY_BOOK,
     REMOVE_REQUEST,
-    UPDATE_BOOK
+    UPDATE_BOOK,
+    TRADE
 } from '../actions/actionTypes';
 
 function books(state = [], action) {
@@ -78,12 +80,37 @@ function booksResult(state = [], action) {
     }
 }
 
-function userInfo(state = {}, action) {
+const userInfoState = {
+    username: '',
+    first: '',
+    last: '',
+    email: '',
+    street: '',
+    city: '',
+    zip: ''
+};
+
+function userInfo(state = userInfoState, action) {
     switch(action.type) {
         case ADD_USER_INFO:
             return action.userInfo;
         case LOG_OUT:
             return {};
+        case ADD_ADDRESS:
+            return state;
+        default:
+            return state;
+    }
+}
+
+function userTrade(state = [], action) {
+    switch(action.type) {
+        case TRADE:
+            const tradeExists = state.some(trade => {
+                trade._id === action.tradeObj._id;
+            });
+            if (tradeExists) return state;
+            return state.concat(action.tradeObj);
         default:
             return state;
     }
@@ -93,5 +120,6 @@ export default combineReducers({
     books,
     userBooks,
     booksResult,
-    userInfo
+    userInfo,
+    userTrade
 });

@@ -298,9 +298,8 @@ export const tradeFetch = tradeObj => {
         })
         .then(status => {
             if (status.error) {
-                throw new Error(books.error);
+                throw new Error(status.error);
             }
-            console.log('--- trade response', status);
             dispatch(trade(tradeObj));
         })
         .catch(err => {

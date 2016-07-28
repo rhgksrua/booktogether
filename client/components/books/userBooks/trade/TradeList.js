@@ -11,7 +11,7 @@ class TradeList extends React.Component {
     }
     render() {
         const userTrade = this.props.userTrade;
-        const trades = userTrade.map(trade => {
+        let trades = userTrade.map(trade => {
             console.log(trade);
             return (
                 <Trade
@@ -23,10 +23,13 @@ class TradeList extends React.Component {
                 />
             );
         });
+        if (trades.length === 0) {
+            trades = <li className='collection-item'>You have no trades</li>;
+        }
         return (
             <div>
                 <h5>Your Trades</h5>
-                <ul>
+                <ul className='collection'>
                     {trades}
                 </ul>
             </div>

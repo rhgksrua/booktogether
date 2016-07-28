@@ -12,9 +12,10 @@ class Trade extends React.Component {
         const requester = this.props.requester;
         const requesterBookTitle = this.props.requesterBookTitle;
         return (
-            <li>
-                <p>Owner: {owner} trading {ownerBookTitle}</p>
-                <p>Requester: {requester} trading {requesterBookTitle}</p>
+            <li className='collection-item'>
+                <p>Owner: <span className='trade-owner'>{owner}</span> - <span className='trade-book'>{ownerBookTitle}</span></p>
+                <p>Requester: <span className='trade-owner'>{requester}</span> trading <span className='trade-book'>{requesterBookTitle}</span></p>
+                <button className='btn'>Complete!</button>
             </li>
         );
     }

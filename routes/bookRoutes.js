@@ -73,6 +73,24 @@ function handleTrade(req, res) {
         if (!values[0] || !values[1]) {
             throw new Error('user does not exist');
         }
+        // Address does not exist.
+        let owner = values[0];
+        let requester = values[0];
+        console.log(owner);
+        console.log(requester);
+
+        if (!owner.local.street ||
+            !owner.local.city ||
+            !owner.local.zip ||
+            !requester.local.street ||
+            !requester.local.city ||
+            !requester.local.zip) {
+            console.log('address error');
+            throw new Error('address does not exist');
+        }
+
+
+
         requesterId = values[1]._id;
         return values;
     })
@@ -163,6 +181,15 @@ function handleRemoveRequest(req, res) {
 
 function handleRequestBook(req, res) {
     const user = req.user;
+    console.log(user);
+
+    // Address check
+    if (!user.local.street ||
+        !user.local.city ||
+        !user.local.zip) {
+        return res.json({error: 'address does not exist'});
+    }
+
     const id = req.body.id;
     const query = {'id': id};
     process.nextTick(function() {

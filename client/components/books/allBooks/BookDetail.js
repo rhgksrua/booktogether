@@ -10,6 +10,15 @@ class BookDetail extends React.Component {
         this.handleRequest = this.handleRequest.bind(this);
         this.handleRemoveRequest = this.handleRemoveRequest.bind(this);
         this.hasRequested = this.hasRequested.bind(this);
+        this.checkAddress = this.checkAddress.bind(this);
+    }
+    checkAddress() {
+        const user = this.props.userInfo;
+
+        if (!user.street || !user.city || !user.zip) {
+            return false;
+        }
+        return true;
     }
     getBook(id) {
         let books = this.props.books;
@@ -46,6 +55,8 @@ class BookDetail extends React.Component {
         let id = this.props.params.id;
         let book = this.getBook(id);
         let userOwned = this.userOwned();
+        const addressExists = this.checkAddress();
+        console.log('address exists', addressExists);
         if (!book) {
             return (
                 <div className='progress'>
@@ -74,10 +85,13 @@ class BookDetail extends React.Component {
                     </div>
                 </div>
                 {/* All books */}
-                {!userOwned && !hasRequested &&
+                {!userOwned && !hasRequested && addressExists &&
                 <p className='btn-container'>
                     <button className='btn' onClick={this.handleRequest}>WANT</button>
                 </p>
+                }
+                {!addressExists &&
+                    <p>Address required to trade</p>
                 }
                 {hasRequested && 
                 <div>

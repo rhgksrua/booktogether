@@ -15,6 +15,16 @@ module.exports = function(passport) {
 
     function handleAddAddress(req, res) {
         const address =  req.body;
+
+        // Adress validation
+        if (!address.street.trim() ||
+            !address.city.trim() ||
+            !address.city.trim())
+        {
+            return res.json({error: 'validation fail'});
+        }
+
+
         const userId = req.user._id;
         const query = {
             '_id': userId
@@ -24,6 +34,7 @@ module.exports = function(passport) {
             'local.city': address.city,
             'local.zip': address.zip
         };
+        
         const options = {
             'new': true
         };

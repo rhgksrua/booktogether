@@ -35,7 +35,7 @@ class UserBooks extends React.Component {
             );
         });
         if (allReqBooks.length === 0) {
-            allReqBooks = <li>None</li>;
+            allReqBooks = <li className='collection-item'>You have no requests</li>;
         }
         return (
             <div>
@@ -48,9 +48,9 @@ class UserBooks extends React.Component {
                     detail={true} 
                     link={'mybooks'}
                 />
-                <h5>Your requests</h5>
+                <h5>Your Requests</h5>
                 {/* maybe move allReqBooks to a separate component */}
-                <ul>
+                <ul className='collection'>
                     {allReqBooks}
                 </ul>
                 <TradeListContainer />

@@ -19,7 +19,7 @@ class RequesterDetail extends React.Component {
         }
         let allRequesters = requesters.map(requester => {
             return (
-                <RequesterContainer key={requester.username} requester={requester.username} bookId={this.props.bookId} />
+                <RequesterContainer key={requester.username} requester={requester.username} bookId={this.props.bookId} bookInfo={this.props.bookInfo} />
             );
         });
         return (

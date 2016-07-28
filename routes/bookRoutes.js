@@ -9,6 +9,8 @@ const Promise = require('bluebird');
 const router = express.Router();
 const isLoggedInAJAX = require('../utils/middlewares').isLoggedInAJAX;
 
+// parent url '/books'
+
 router.put('/add', isLoggedInAJAX, handleAddBook);
 router.get('/me', isLoggedInAJAX, handleMyBooks);
 router.get('/all', handleAllBooks);
@@ -17,13 +19,47 @@ router.post('/request', isLoggedInAJAX, handleRequestBook);
 router.delete('/removerequest', isLoggedInAJAX, handleRemoveRequest);
 router.put('/trade', isLoggedInAJAX, handleTrade);
 router.put('/tradetest', handleTrade);
+router.get('/trade', isLoggedInAJAX, handleGetTrade);
+router.get('/tradetest', handleGetTrade);
+
+function handleGetTrade(req, res) {
+    const user = req.user;
+    const query = {
+        $or: [ 
+            { 'requester.id': user._id }, 
+            { 'owner.id': user._id } 
+        ]
+    };
+    Trade.find(query).exec()
+        .then(trades => {
+            console.log(trades)
+            return trades;
+        })
+        .then(trades => {
+            return res.json({trades: trades});
+        })
+        .catch(err => {
+            if (err) {
+                console.log(err);
+            }
+            return res.json({error: 'db error'});
+        })
+        
+
+
+}
 
 function handleTrade(req, res) {
     // destructuring not supported in nodejs version < 6
+    //
     const owner = req.body.owner;
     const ownerBookId = req.body.ownerBookId;
+    const ownerBookTitle = req.body.ownerBookTitle;
+
     const requester = req.body.requester;
     const requesterBookId = req.body.requesterBookId;
+    const requesterBookTitle = req.body.requesterBookTitle;
+
     let requesterId;
 
     // Basic serverside validation
@@ -35,7 +71,6 @@ function handleTrade(req, res) {
     const b = User.findOne({'local.username': requester}).exec();
     Promise.all([a, b]).then(function(values) {
         if (!values[0] || !values[1]) {
-            console.log('user does not exist');
             throw new Error('user does not exist');
         }
         requesterId = values[1]._id;
@@ -76,12 +111,14 @@ function handleTrade(req, res) {
             owner: {
                 id: req.user.id,
                 username: owner,
-                bookId: ownerBookId
+                bookId: ownerBookId,
+                bookTitle: ownerBookTitle
             },
             requester: {
                 id: requesterId,
                 username: requester,
-                bookId: requesterBookId
+                bookId: requesterBookId,
+                bookTitle: requesterBookTitle
             }
         }
         const newTrade = new Trade(tradeInfo);

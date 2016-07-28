@@ -8,13 +8,19 @@ class RequesterBook extends React.Component {
     handleTrade() {
         const owner = this.props.userInfo.username;
         const ownerBookId = this.props.currentBookId;
+        const ownerBookTitle = this.props.bookInfo.volumeInfo.title;
+
         const requester = this.props.requester;
         const requesterBookId = this.props.bookId;
+        const requesterBookTitle = this.props.requesterBookTitle;
+
         const tradeObj = {
             owner,
             ownerBookId,
+            ownerBookTitle,
             requester,
-            requesterBookId
+            requesterBookId,
+            requesterBookTitle
         };
         this.props.trade(tradeObj);
     }

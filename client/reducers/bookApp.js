@@ -10,7 +10,8 @@ import {
     REMOVE_MY_BOOK,
     REMOVE_REQUEST,
     UPDATE_BOOK,
-    TRADE
+    TRADE,
+    GET_TRADE
 } from '../actions/actionTypes';
 
 function books(state = [], action) {
@@ -93,7 +94,7 @@ const userInfoState = {
 function userInfo(state = userInfoState, action) {
     switch(action.type) {
         case ADD_USER_INFO:
-            return action.userInfo;
+            return Object.assign({}, state, action.userInfo);
         case LOG_OUT:
             return {};
         case ADD_ADDRESS:
@@ -111,6 +112,8 @@ function userTrade(state = [], action) {
             });
             if (tradeExists) return state;
             return state.concat(action.tradeObj);
+        case GET_TRADE:
+            return action.trades;
         default:
             return state;
     }

@@ -1,14 +1,12 @@
 import React from 'react';
 //import UserBookList from './UserBookList';
 import UserBookList from './UserBookList';
+import TradeListContainer from './trade/TradeListContainer';
 
 class UserBooks extends React.Component {
     constructor(props) {
         super(props);
         this.getRequests = this.getRequests.bind(this);
-    }
-    componentDidMount() {
-        //this.props.getUserBooks();
     }
     getRequests() {
         const books = this.props.books;
@@ -28,7 +26,7 @@ class UserBooks extends React.Component {
     }
     render() {
         let reqBooks = this.getRequests();
-        const allReqBooks = reqBooks.map(book => {
+        let  allReqBooks = reqBooks.map(book => {
             return (
                 <li key={book.id}>
                     <p>{book.volumeInfo.title}</p>
@@ -36,6 +34,9 @@ class UserBooks extends React.Component {
                 </li>
             );
         });
+        if (allReqBooks.length === 0) {
+            allReqBooks = <li>None</li>;
+        }
         return (
             <div>
                 <h5>Your Books</h5>
@@ -47,10 +48,12 @@ class UserBooks extends React.Component {
                     detail={true} 
                     link={'mybooks'}
                 />
-                <p>Your requests</p>
+                <h5>Your requests</h5>
+                {/* maybe move allReqBooks to a separate component */}
                 <ul>
                     {allReqBooks}
                 </ul>
+                <TradeListContainer />
             </div>
         );
     }

@@ -22,6 +22,7 @@ import '../styles/index.scss';
 const loggerMiddleware = createLogger();
 
 let store = createStore(bookApp, applyMiddleware(thunkMiddleware, loggerMiddleware));
+//let store = createStore(bookApp, applyMiddleware(thunkMiddleware));
 
 ReactDOM.render((
     <Provider store={store}>

@@ -15,7 +15,7 @@ class Requester extends React.Component {
         });
         let requesterBooks = requesterBook.map(book => {
             return (
-                <RequesterBookContainer key={book.id} bookTitle={book.volumeInfo.title} bookId={book.id} requester={this.props.requester}  currentBookId={this.props.bookId} />
+                <RequesterBookContainer key={book.id} bookTitle={book.volumeInfo.title} bookId={book.id} requester={this.props.requester}  currentBookId={this.props.bookId} bookInfo={this.props.bookInfo} requesterBookTitle={book.volumeInfo.title} />
             );
         });
         return (

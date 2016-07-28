@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import { addUserInfo } from './actions';
 
 import {
     ADD_ALL_BOOKS,
@@ -9,10 +10,9 @@ import {
     REMOVE_MY_BOOK,
     UPDATE_BOOK,
     REMOVE_REQUEST,
-    TRADE
+    TRADE,
+    GET_TRADE
 } from './actionTypes';
-
-import { addUserInfo } from './actions';
 
 export const addAllBooks = (books) => {
     return {
@@ -301,6 +301,42 @@ export const tradeFetch = tradeObj => {
                 throw new Error(status.error);
             }
             dispatch(trade(tradeObj));
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+    };
+}
+
+export const getTrade = (trades) => {
+    return {
+        type: GET_TRADE,
+        trades
+    };
+}
+
+export const getTradeFetch = () => {
+    const URL = `${window.location.protocol}//${window.location.host}/books/trade`;
+    return dispatch => {
+        return fetch(
+            URL,
+            {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin',
+            }
+        )
+        .then(data => {
+            return data.json();
+        })
+        .then(tradeObj => {
+            if (status.error) {
+                throw new Error(status.error);
+            }
+            console.log('^^^^ tradeobj', tradeObj);
+            dispatch(getTrade(tradeObj.trades));
         })
         .catch(err => {
             console.warn(err);

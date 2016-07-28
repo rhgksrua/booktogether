@@ -10,7 +10,7 @@ class Me extends React.Component {
         this.handleZip = this.handleZip.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         const userInfo = this.props.userInfo;
-        //console.log('****', userInfo);
+        console.log('const Me', userInfo);
         this.state = {
             email: userInfo.email,
             street: userInfo.street,
@@ -52,7 +52,6 @@ class Me extends React.Component {
     }
     handleSubmit(e) {
         e.preventDefault();
-        console.log('changing address', this.state);
         this.props.updateAddress(this.state);
     }
     render() {

@@ -15,7 +15,6 @@ module.exports = function(passport) {
 
     function handleAddAddress(req, res) {
         const address =  req.body;
-        console.log('--- address', address);
         const userId = req.user._id;
         const query = {
             '_id': userId
@@ -30,7 +29,6 @@ module.exports = function(passport) {
         };
         User.findOneAndUpdate(query, update, options, function(err, doc) {
             if (err) return res.json({error: 'db error'});
-            //console.log(doc);
             const userInfo = {
                 email: req.user.local.email,
                 first: req.user.local.first,
@@ -40,14 +38,12 @@ module.exports = function(passport) {
                 city: address.city,
                 zip: address.zip
             };
-            console.log(userInfo);
-            return res.json(doc);
+            return res.json(userInfo);
         });
     }
     
     function handleLogInSuccess(req, res) {
         const user = req.user.local;
-        console.log('-- user', user);
         let userInfo = {
             email: req.user.local.email,
             first: req.user.local.first,

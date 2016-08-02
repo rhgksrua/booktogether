@@ -39,9 +39,10 @@ if (process.env.NODE_ENV === 'development') {
 mongoose.connect(MONGO_URI);
 
 app.use(session({
-    secret: 'booktogethersecret', // need to replace this with env var
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    rolling: true,
     cookie: { maxAge: 60 * 60 * 24 * 365 * 1000},
     store: new MongoStore({
         mongooseConnection: mongoose.connection

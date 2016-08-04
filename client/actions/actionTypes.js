@@ -15,3 +15,4 @@ export const UPDATE_BOOK = 'UPDATE_BOOK';
 export const REMOVE_REQUEST = 'REMOVE_REQUEST';
 export const TRADE = 'TRADE';
 export const GET_TRADE = 'GET_TRADE';
+export const COMPLETE_TRADE = 'COMPLETE_TRADE';

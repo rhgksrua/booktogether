@@ -11,7 +11,8 @@ import {
     UPDATE_BOOK,
     REMOVE_REQUEST,
     TRADE,
-    GET_TRADE
+    GET_TRADE,
+    COMPLETE_TRADE
 } from './actionTypes';
 
 export const addAllBooks = (books) => {
@@ -313,7 +314,7 @@ export const getTrade = (trades) => {
         type: GET_TRADE,
         trades
     };
-}
+};
 
 export const getTradeFetch = () => {
     const URL = `${window.location.protocol}//${window.location.host}/books/trade`;
@@ -333,10 +334,46 @@ export const getTradeFetch = () => {
         })
         .then(tradeObj => {
             if (status.error) {
+                throw new Error(tradeObj.error);
+            }
+            dispatch(getTrade(tradeObj.trades));
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+    };
+};
+
+export const comepleteTrade = (tradeId) => {
+    return {
+        type: COMPLETE_TRADE,
+        tradeId
+    };
+};
+
+export const completeTradeFetch = (tradeId, owned) => {
+    const URL = `${window.location.protocol}//${window.location.host}/books/trade/complete`;
+    return dispatch => {
+        return fetch(
+            URL,
+            {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({ tradeId, owned })
+            }
+        )
+        .then(data => {
+            return data.json();
+        })
+        .then(status => {
+            if (status.error) {
                 throw new Error(status.error);
             }
-            console.log('^^^^ tradeobj', tradeObj);
-            dispatch(getTrade(tradeObj.trades));
+            console.log('^^^^ status', status);
+            //dispatch(getTrade(tradeObj.trades));
         })
         .catch(err => {
             console.warn(err);

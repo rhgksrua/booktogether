@@ -21,6 +21,38 @@ router.put('/trade', isLoggedInAJAX, handleTrade);
 router.put('/tradetest', handleTrade);
 router.get('/trade', isLoggedInAJAX, handleGetTrade);
 router.get('/tradetest', handleGetTrade);
+router.put('/trade/complete', isLoggedInAJAX, handleComplete);
+
+function handleComplete(req, res) {
+    const user = req.user;
+    const tradeId = req.body.tradeId;
+    const owned = req.body.owned;
+    console.log(tradeId, owned);
+    const query = {
+        _id: tradeId
+    };
+    let update;
+    if (owned) {
+        update = {
+            $set: {'owner.status': true}
+        };
+    } else {
+        update = {
+            $set: {'requester.status': true}
+        };
+    }
+    Trade.findOneAndUpdate(query, update).exec()
+        .then(trade => {
+            console.log(trade);
+            return res.json({status: 'yup'});
+        })
+        .catch(err => {
+            console.log(err.message);
+            return res.json({error: 'db error'});
+        });
+    
+    //res.json({status: 'complete'});
+}
 
 function handleGetTrade(req, res) {
     const user = req.user;
@@ -50,8 +82,6 @@ function handleGetTrade(req, res) {
 }
 
 function handleTrade(req, res) {
-    // destructuring not supported in nodejs version < 6
-    //
     const owner = req.body.owner;
     const ownerBookId = req.body.ownerBookId;
     const ownerBookTitle = req.body.ownerBookTitle;
@@ -61,6 +91,7 @@ function handleTrade(req, res) {
     const requesterBookTitle = req.body.requesterBookTitle;
 
     let requesterId;
+    let completedTrade;
 
     // Basic serverside validation
     if (!owner || !ownerBookId || !requester || !requesterBookId) {
@@ -76,9 +107,6 @@ function handleTrade(req, res) {
         // Address does not exist.
         let owner = values[0];
         let requester = values[0];
-        console.log(owner);
-        console.log(requester);
-
         if (!owner.local.street ||
             !owner.local.city ||
             !owner.local.zip ||
@@ -88,9 +116,6 @@ function handleTrade(req, res) {
             console.log('address error');
             throw new Error('address does not exist');
         }
-
-
-
         requesterId = values[1]._id;
         return values;
     })
@@ -144,8 +169,23 @@ function handleTrade(req, res) {
         return tradeQuery;
     })
     .then(function(trade) {
+        // need to remove requests
+        // Get owner book. Remove requester from requesters.
+
+        completedTrade = trade;
+
+        const removeQuery = {
+            'id': ownerBookId
+        };
+        const removeUpdate = {
+            '$pull': {'requests': {'username': requester}}
+        };
+        return Book.findOneAndUpdate(removeQuery, removeUpdate).exec();
+    })
+    .then(function(trade) {
         // Update user books
-        return res.json(trade);
+        console.log(completedTrade);
+        return res.json(completedTrade);
     })
     .catch(function(err) {
         console.log(err.message);

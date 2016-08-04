@@ -63,7 +63,6 @@ const bookRoutes = require('./routes/bookRoutes');
 app.use('/user', userRoutes);
 app.use('/books', bookRoutes);
 
-
 app.get('/*', function(req, res) {
     res.render('index');
 });

@@ -3,9 +3,13 @@ import React from 'react';
 class Trade extends React.Component {
     constructor(props) {
         super(props);
+        this.completeTrade = this.completeTrade.bind(this);
+    }
+    completeTrade(e) {
+        console.log("111111111111", this.props);
+        this.props.completeTrade(this.props.tradeId, this.props.owned);
     }
     render() {
-
         const owner = this.props.owner;
         const ownerBookTitle = this.props.ownerBookTitle;
 
@@ -15,7 +19,7 @@ class Trade extends React.Component {
             <li className='collection-item'>
                 <p>Owner: <span className='trade-owner'>{owner}</span> - <span className='trade-book'>{ownerBookTitle}</span></p>
                 <p>Requester: <span className='trade-owner'>{requester}</span> trading <span className='trade-book'>{requesterBookTitle}</span></p>
-                <button className='btn'>Complete!</button>
+                <button className='btn' onClick={this.completeTrade}>Complete!</button>
             </li>
         );
     }

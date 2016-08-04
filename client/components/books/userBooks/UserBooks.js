@@ -28,7 +28,7 @@ class UserBooks extends React.Component {
         let reqBooks = this.getRequests();
         let  allReqBooks = reqBooks.map(book => {
             return (
-                <li key={book.id}>
+                <li className='collection-item' key={book.id}>
                     <p>{book.volumeInfo.title}</p>
                     <button className='btn' onClick={this.removeRequest.bind(this, book.id)}>REMOVE</button>
                 </li>

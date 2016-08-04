@@ -9,13 +9,15 @@ const TradeSchema = mongoose.Schema({
         id: String,
         username: String,
         bookId: String,
-        bookTitle: String
+        bookTitle: String,
+        status: { type: Boolean, default: false }
     },
     requester: {
         id: String,
         username: String,
         bookId: String,
-        bookTitle: String
+        bookTitle: String,
+        status: { type: Boolean, default: false }
     },
     date: { type: Date, default: Date.now },
 });

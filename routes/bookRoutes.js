@@ -41,17 +41,37 @@ function handleComplete(req, res) {
             $set: {'requester.status': true}
         };
     }
-    Trade.findOneAndUpdate(query, update).exec()
+    const options = {'new': true};
+    Trade.findOneAndUpdate(query, update, options).exec()
         .then(trade => {
+            if (trade.complete) {
+                // Errors on trying to complete already complete trade.
+                // Users should not be able to see the 'COMPLETE' button at all.
+                console.log('Trade completed already. Nothing done');
+                //throw new Error('error');
+            }
+            return trade;
+        })
+        .then(trade => {
+            if (trade.requester.status && trade.owner.status) {
+                console.log('trade complete on both ends');
+                trade.complete = true;
+                trade.completeDate = new Date;
+                return trade.save(function(err, doc) {
+                    if (err) {
+                        console.log(err);
+                        throw new Error('db error');
+                    }
+                    return res.json({status: 'trade complete'});
+                });
+            }
             console.log(trade);
-            return res.json({status: 'yup'});
+            return res.json({status: 'waiting for other trader'});
         })
         .catch(err => {
             console.log(err.message);
-            return res.json({error: 'db error'});
+            return res.json({error: err.message});
         });
-    
-    //res.json({status: 'complete'});
 }
 
 function handleGetTrade(req, res) {

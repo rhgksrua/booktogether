@@ -6,7 +6,7 @@ class Trade extends React.Component {
         this.completeTrade = this.completeTrade.bind(this);
     }
     completeTrade(e) {
-        console.log("111111111111", this.props);
+        //console.log("111111111111", this.props);
         this.props.completeTrade(this.props.tradeId, this.props.owned);
     }
     render() {
@@ -19,7 +19,13 @@ class Trade extends React.Component {
             <li className='collection-item'>
                 <p>Owner: <span className='trade-owner'>{owner}</span> - <span className='trade-book'>{ownerBookTitle}</span></p>
                 <p>Requester: <span className='trade-owner'>{requester}</span> trading <span className='trade-book'>{requesterBookTitle}</span></p>
+                {!this.props.complete &&
                 <button className='btn' onClick={this.completeTrade}>Complete!</button>
+                }
+                {this.props.complete &&
+                <p>Trade Completed on {this.props.completeDate}</p>
+                }
+
             </li>
         );
     }

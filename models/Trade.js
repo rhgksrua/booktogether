@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 
 
 const TradeSchema = mongoose.Schema({
+    complete: { type: Boolean, default: false },
+    completeDate: { type: Date },
     owner: {
         id: String,
         username: String,

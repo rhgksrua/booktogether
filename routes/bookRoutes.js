@@ -27,20 +27,26 @@ function handleComplete(req, res) {
     const user = req.user;
     const tradeId = req.body.tradeId;
     const owned = req.body.owned;
-    console.log(tradeId, owned);
+
+    let update;
+    let userRole;
+    let bookId;
+
     const query = {
         _id: tradeId
     };
-    let update;
     if (owned) {
         update = {
             $set: {'owner.status': true}
         };
+        userRole = 'owner';
     } else {
         update = {
             $set: {'requester.status': true}
         };
+        userRole = 'requester';
     }
+
     const options = {'new': true};
     Trade.findOneAndUpdate(query, update, options).exec()
         .then(trade => {
@@ -48,25 +54,50 @@ function handleComplete(req, res) {
                 // Errors on trying to complete already complete trade.
                 // Users should not be able to see the 'COMPLETE' button at all.
                 console.log('Trade completed already. Nothing done');
-                //throw new Error('error');
+                throw new Error('error');
             }
             return trade;
         })
         .then(trade => {
+
+            // bookId needed to remove books from user after completing trade.
+            bookId = trade[userRole].bookId;
             if (trade.requester.status && trade.owner.status) {
                 console.log('trade complete on both ends');
+                // Use this bookId to remove user from Book.users
+                
+
                 trade.complete = true;
                 trade.completeDate = new Date;
-                return trade.save(function(err, doc) {
-                    if (err) {
-                        console.log(err);
-                        throw new Error('db error');
-                    }
-                    return res.json({status: 'trade complete'});
-                });
+                console.log('user trade complete');
+
+                return trade.save();
             }
-            console.log(trade);
-            return res.json({status: 'waiting for other trader'});
+            return false; //res.json({status: 'waiting for other trader'});
+        })
+        .then(trade => {
+            console.log('--- trying to remove book from owner');
+
+
+            // Need to remove user from Book.owners
+            const query = { id: bookId };
+            console.log('------ bookId', bookId);
+            console.log('------ user._id', user._id);
+            const update = {
+                $pull: {
+                    owners: {
+                        $elemMatch: {
+                            id: user._id
+                        }
+                    }
+                }
+            };
+            Book.findOneAndUpdate(query, update, {new: true}, function(err, doc) {
+                if (err) throw new Error('db error trade');
+                console.log('--- removing ownership of book');
+                console.log(doc);
+                return res.json({status: 'trade complete'});
+            });
         })
         .catch(err => {
             console.log(err.message);

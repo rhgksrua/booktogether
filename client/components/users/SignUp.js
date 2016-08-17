@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 
 /**
@@ -15,14 +16,15 @@ class SignUp extends React.Component {
         this.state = {
             dirty: false,
             email: '',
-            first: '',
-            last: '',
-            password: '',
-            username: '',
             emailError: '',
+            first: '',
             firstError: '',
-            usernameError: '',
+            last: '',
             lastError: '',
+            password: '',
+            passwordError: '',
+            username: '',
+            usernameError: '',
         };
         this.handleEmail = this.handleEmail.bind(this);
         this.handleFirst = this.handleFirst.bind(this);
@@ -45,42 +47,57 @@ class SignUp extends React.Component {
                 emailError: '',
             });
         }
-
-
     }
     handleFirst(e) {
+        let first = e.target.value;
+        let firstError;
         this.setState({
-            first: e.target.value,
+            first,
             dirty: true
         });
-        if (!/[A-Za-z\s]/.test(e.target.value.trim())) {
-            this.setState({
-                firstError: 'Invalid name',
-            });
+        if (first.trim().length < 1) {
+            firstError = 'too short';
+        } else if (!/[A-Za-z\s]/.test(e.target.value.trim())) {
+            firstError= 'Invalid name';
         } else {
-            this.setState({
-                firstError: '',
-            });
+            firstError= ''
         }
+        this.setState({ firstError });
     }
     handleLast(e) {
-        this.setState({
-            last: e.target.value
-        });
+        let last = e.target.value;
+        let lastError;
+        this.setState({ last });
+        if (!/[A-Za-z\s]/.test(last)) {
+            lastError = 'Invalid name';
+        } else {
+            lastError = '';
+        }
+        this.setState({ lastError });
     }
     handlePassword(e) {
+        let password = e.target.value;
+        let passwordError;
         this.setState({
-            password: e.target.value
-        });
-    }
-    handleUsername(e) {
-        let username = e.target.value.trim();
-        console.log(username.length);
-        this.setState({
-            username: e.target.value.trim(),
+            password,
             dirty: true
         });
-        if (username.length < 4) {
+        if (password.trim().length < 5) {
+            passwordError= 'password too short';
+        } else if (/\s+/.test(password)) {
+            passwordError = 'space not allowed';
+        } else {
+            passwordError = '';
+        }
+        this.setState({ passwordError });
+    }
+    handleUsername(e) {
+        let username = e.target.value;
+        this.setState({
+            username,
+            dirty: true
+        });
+        if (username.trim().length < 4) {
             this.setState({
                 usernameError: 'Username too short (at least 5 characters)'
             });
@@ -99,13 +116,20 @@ class SignUp extends React.Component {
         this.props.submitSignUp(this.state);
     }
     render() {
+        const emailClass = classNames({'invalid': this.state.emailError});
+        const usernameClass = classNames({'invalid': this.state.usernameError});
+        const firstClass = classNames({'invalid': this.state.firstError});
+        const lastClass = classNames({'invalid': this.state.lastError});
+        const passwordClass = classNames({'invalid': this.state.passwordError});
         return (
             <div>
                 <h5>Sign Up</h5>
+                <div className='white-text card-panel red lighten-2'>Only warns. Still can register with invalid info.</div>
                 <form className='signup' onSubmit={this.handleSubmit}>
                     <div className='input-field'>
                         <label htmlFor='email'>email <span className='input-error'>{this.state.dirty && this.state.emailError}</span></label>
                         <input 
+                            className={emailClass}
                             type='text' 
                             id='email' 
                             value={this.state.email} 
@@ -115,6 +139,7 @@ class SignUp extends React.Component {
                     <div className='input-field'>
                         <label htmlFor='username'>username <span className='input-error'>{this.state.dirty && this.state.usernameError}</span></label>
                         <input 
+                            className={usernameClass}
                             type='text' 
                             id='username' 
                             value={this.state.username} 
@@ -122,8 +147,9 @@ class SignUp extends React.Component {
                         />
                     </div>
                     <div className='input-field'>
-                        <label htmlFor='first'>first <span className='input-error'>{this.state.dirty && this.state.usernameError}</span></label>
+                        <label htmlFor='first'>first <span className='input-error'>{this.state.dirty && this.state.firstError}</span></label>
                         <input 
+                            className={firstClass}
                             type='text' 
                             id='first' 
                             value={this.state.first} 
@@ -131,8 +157,9 @@ class SignUp extends React.Component {
                         />
                     </div>
                     <div className='input-field'>
-                        <label htmlFor='last'>last <span className='input-error'>{this.state.dirty && this.state.last}</span></label>
+                        <label htmlFor='last'>last <span className='input-error'>{this.state.dirty && this.state.lastError}</span></label>
                         <input 
+                            className={lastClass}
                             type='text' 
                             id='last' 
                             value={this.state.last} 
@@ -140,8 +167,9 @@ class SignUp extends React.Component {
                         />
                     </div>
                     <div className='input-field'>
-                        <label htmlFor='password'>password</label>
+                        <label htmlFor='password'>password <span className='input-error'>{this.state.dirty && this.state.passwordError}</span></label>
                         <input 
+                            className={passwordClass}
                             type='password' 
                             id='password' 
                             value={this.state.password} 

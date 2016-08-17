@@ -8,6 +8,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
+        // need to trim strings before sending to server or server needs
+        // to trim before saving.
         submitSignUp: (userInfo) => {
             dispatch(signUpFetch(userInfo));
         }

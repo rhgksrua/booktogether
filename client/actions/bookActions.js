@@ -41,7 +41,7 @@ export const allBooksFetch = () => {
             if (books.error) {
                 throw new Error(books.error);
             }
-            console.log('---- all books', books);
+            //console.log('---- all books', books);
             dispatch(addAllBooks(books.books));
         })
         .catch(err => {

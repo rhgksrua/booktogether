@@ -24,6 +24,15 @@ const loggerMiddleware = createLogger();
 let store = createStore(bookApp, applyMiddleware(thunkMiddleware, loggerMiddleware));
 //let store = createStore(bookApp, applyMiddleware(thunkMiddleware));
 
+const auth = (nextState, replace) => {
+    // Need to check for user token.
+    // However, token isn't implemented right now.
+    // 
+    // All the routes that need user authentication will not be seen by unregistered users
+    // unless they type thr url in the browser.
+    // console.log('--- getstate', store.getState());
+};
+
 ReactDOM.render((
     <Provider store={store}>
         <Router history={browserHistory}>
@@ -33,11 +42,14 @@ ReactDOM.render((
                 <Route path='/login'         component={LogInContainer} />
                 <Route path='/allbooks'      component={AllBooksContainer} />
                 <Route path='/allbooks/:id'  component={AllBookDetailContainer} />
-                <Route path='/mybooks'       component={UserBooksContainer} />
-                <Route path='/mybooks/:id'   component={UserBookDetailContainer} />
-                <Route path='/search'        component={AddBookContainer} />
-                <Route path='/me'            component={MeContainer} />
+                <Route path='/mybooks'       component={UserBooksContainer} onEnter={auth} />
+                <Route path='/mybooks/:id'   component={UserBookDetailContainer} onEnter={auth} />
+                <Route path='/search'        component={AddBookContainer} onEnter={auth}/>
+                <Route path='/me'            component={MeContainer} onEnter={auth} />
             </Route>
         </Router>
     </Provider>
 ), document.getElementById('app'));
+
+
+

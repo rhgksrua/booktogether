@@ -22,7 +22,6 @@ class App extends React.Component {
     render() {
         const user = this.props.userInfo;
         const books = this.props.userBooks;
-        //console.log('--- total num of user books', books);
         return (
             <div className='container'>
                 <header>
@@ -37,8 +36,12 @@ class App extends React.Component {
                         <Link to='/' className='brand-logo' name='BookTogether' onlyActiveOnIndex={true}>BookTogether</Link>
                         <ul id='nav-mobile' className='right hide-on-med-and-down'>
                             <NavLink to='/allbooks' name='All Books' />
+                            {user && user.username &&
                             <NavLink to='/mybooks' name='My Books' />
+                            }
+                            {user && user.username &&
                             <NavLink to='/search' name='Add Book' />
+                            }
                             {user && !user.username &&
                             <NavLink to='/signup' name='Sign Up' />
                             }
@@ -85,7 +88,7 @@ class App extends React.Component {
                     </div>
                     }
                     {user && !user.username &&
-                    <p>Welcome! Sign In to start!</p>
+                    <p>Welcome! Log in or sign up to start!</p>
                     }
                 </div>
                 <div>

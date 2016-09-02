@@ -8,6 +8,9 @@ import classNames from 'classnames';
  * The state keeps track of 'dirty' property to detect any changes in user input.
  * Error message does not fire off until the user form has been 'dirtied'.
  *
+ * Currently, inputs are controlled by React.  Using 'refs' might be little bit
+ * easier because each input does not need its own method.
+ *
  * @returns {undefined}
  */
 class SignUp extends React.Component {
@@ -33,6 +36,18 @@ class SignUp extends React.Component {
         this.handleUsername = this.handleUsername.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('will update account errors', this.props.accountErrors);
+        console.log('will update next props', nextProps);
+        if (nextProps.accountErrors && nextProps.accountErrors.errorsExist) {
+            this.setState({
+                emailError: nextProps.accountErrors.email || '',
+                usernameError: nextProps.accountErrors.username || '',
+            });
+        }
+    }
+
     handleEmail(e) {
         this.setState({
             email: e.target.value,
@@ -121,10 +136,15 @@ class SignUp extends React.Component {
         const firstClass = classNames({'invalid': this.state.firstError});
         const lastClass = classNames({'invalid': this.state.lastError});
         const passwordClass = classNames({'invalid': this.state.passwordError});
+
+        // accounts Error
+        console.log('*** accountErrors', this.props.accountErrors.errorsExist);
+
+
         return (
             <div>
                 <h5>Sign Up</h5>
-                <div className='white-text card-panel red lighten-2'>Only warns. Still can register with invalid info.</div>
+                <div className='white-text card-panel red lighten-2'>Even though you get a error message, you can still can register with invalid info. This should be removed before production.</div>
                 <form className='signup' onSubmit={this.handleSubmit}>
                     <div className='input-field'>
                         <label htmlFor='email'>email <span className='input-error'>{this.state.dirty && this.state.emailError}</span></label>

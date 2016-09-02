@@ -4,8 +4,11 @@ class LogIn extends React.Component {
     constructor(props) {
         super();
         this.state = {
+            dirty: false,
             email: '',
-            password: ''
+            emailError: '',
+            password: '',
+            passwordError: '',
         };
         this.handleEmail = this.handleEmail.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
@@ -13,12 +16,14 @@ class LogIn extends React.Component {
     }
     handleEmail(e) {
         this.setState({
-            email: e.target.value
+            email: e.target.value,
+            dirty: true,
         });
     }
     handlePassword(e) {
         this.setState({
-            password: e.target.value
+            password: e.target.value,
+            dirty: true,
         });
     }
     handleSubmit(e) {

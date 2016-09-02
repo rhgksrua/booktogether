@@ -11,7 +11,9 @@ import {
     REMOVE_REQUEST,
     UPDATE_BOOK,
     TRADE,
-    GET_TRADE
+    GET_TRADE,
+    SIGN_UP_ERRORS,
+    CLEAR_ERRORS,
 } from '../actions/actionTypes';
 
 function books(state = [], action) {
@@ -113,7 +115,22 @@ function userTrade(state = [], action) {
             if (tradeExists) return state;
             return state.concat(action.tradeObj);
         case GET_TRADE:
-            return action.trades;
+            return action.trades || [];
+        default:
+            return state;
+    }
+}
+
+function accountErrors(state = {}, action) {
+    switch(action.type) {
+        case SIGN_UP_ERRORS:
+            console.log('reducer errors', action.errors);
+            return Object.assign({}, state, action.errors, {errorsExist: true});
+        case ADD_USER_INFO:
+            // On sign up success, all errors gets wiped out.
+            return {};
+        case CLEAR_ERRORS:
+            return {};
         default:
             return state;
     }
@@ -124,5 +141,6 @@ export default combineReducers({
     userBooks,
     booksResult,
     userInfo,
-    userTrade
+    userTrade,
+    accountErrors,
 });

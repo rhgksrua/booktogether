@@ -7,7 +7,9 @@ import {
     LOG_IN,
     LOG_OUT,
     ADD_USER_INFO,
-    ADD_ADDRESS
+    ADD_ADDRESS,
+    SIGN_UP_ERRORS,
+    CLEAR_ERRORS,
 } from './actionTypes';
 
 export const signUp = (userInfo) => {
@@ -60,8 +62,23 @@ export const logOut = () => {
     };
 };
 
+export const signUpErrors = (errors) => {
+    return {
+        type: SIGN_UP_ERRORS,
+        errors
+    };
+}
+
+export const clearAccountErrors = () => {
+    return {
+        type: CLEAR_ERRORS,
+    }
+}
+
 export const signUpFetch = userInfo => {
     return dispatch => {
+        // Clear errors before another attemp at sign up is made.
+        dispatch(clearAccountErrors());
         return fetch(
             `${window.location.protocol}//${window.location.host}/user/signup`,
             {
@@ -77,15 +94,15 @@ export const signUpFetch = userInfo => {
             return data.json();
         })
         .then(userInfo => {
-            if (userInfo.error) {
-                throw new Error(userInfo.error);
+            if (userInfo.errors) {
+                dispatch(signUpErrors(userInfo.errors));
+                throw new Error('sign up errors');
             }
-            console.log('--- signup fetch', userInfo);
             dispatch(addUserInfo(userInfo));
             browserHistory.push('/mybooks');
         })
         .catch(err => {
-            console.warn(err);
+            console.warn(err.message);
         });
     };
 };

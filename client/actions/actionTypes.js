@@ -16,3 +16,5 @@ export const REMOVE_REQUEST = 'REMOVE_REQUEST';
 export const TRADE = 'TRADE';
 export const GET_TRADE = 'GET_TRADE';
 export const COMPLETE_TRADE = 'COMPLETE_TRADE';
+export const SIGN_UP_ERRORS = 'SIGN_UP_ERRORS';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';

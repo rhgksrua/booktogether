@@ -30,17 +30,21 @@ module.exports = function(passport) {
             User.find(query).exec()
                 .then(function(users) {
                     let errors = {};
+                    console.log(users);
                     users.forEach(function(user) {
-                        
+                        // Creating custom errors.
+                        // req.Login callback function will be invoked with 'errors'
                         if (user.local.username === req.body.username) {
                             errors.username = 'username exists';
                         }
-                        if (user.local.email === req.body.email) {
+                        if (user.local.email === email) {
                             errors.email = 'email exists';
                         }
                     });
+                    console.log(errors);
                     if (errors.username || errors.email) {
-                        return done(null, false, errors);
+                        done(null, false, errors);
+                        return null;
                     } else {
                         var newUser = new User();
                         newUser.local.email = email;

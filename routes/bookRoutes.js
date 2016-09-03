@@ -53,7 +53,6 @@ function handleComplete(req, res) {
             if (trade.complete) {
                 // Errors on trying to complete already complete trade.
                 // Users should not be able to see the 'COMPLETE' button at all.
-                console.log('Trade completed already. Nothing done');
                 throw new Error('error');
             }
             return trade;
@@ -63,26 +62,19 @@ function handleComplete(req, res) {
             // bookId needed to remove books from user after completing trade.
             bookId = trade[userRole].bookId;
             if (trade.requester.status && trade.owner.status) {
-                console.log('trade complete on both ends');
                 // Use this bookId to remove user from Book.users
                 
 
                 trade.complete = true;
                 trade.completeDate = new Date;
-                console.log('user trade complete');
 
                 return trade.save();
             }
             return false; //res.json({status: 'waiting for other trader'});
         })
         .then(trade => {
-            console.log('--- trying to remove book from owner');
-
-
             // Need to remove user from Book.owners
             const query = { id: bookId };
-            console.log('------ bookId', bookId);
-            console.log('------ user._id', user._id);
             const update = {
                 $pull: {
                     owners: {
@@ -94,13 +86,10 @@ function handleComplete(req, res) {
             };
             Book.findOneAndUpdate(query, update, {new: true}, function(err, doc) {
                 if (err) throw new Error('db error trade');
-                console.log('--- removing ownership of book');
-                console.log(doc);
                 return res.json({status: 'trade complete'});
             });
         })
         .catch(err => {
-            console.log(err.message);
             return res.json({error: err.message});
         });
 }
@@ -115,7 +104,6 @@ function handleGetTrade(req, res) {
     };
     Trade.find(query).exec()
         .then(trades => {
-            console.log(trades)
             return trades;
         })
         .then(trades => {
@@ -164,7 +152,6 @@ function handleTrade(req, res) {
             !requester.local.street ||
             !requester.local.city ||
             !requester.local.zip) {
-            console.log('address error');
             throw new Error('address does not exist');
         }
         requesterId = values[1]._id;
@@ -235,11 +222,9 @@ function handleTrade(req, res) {
     })
     .then(function(trade) {
         // Update user books
-        console.log(completedTrade);
         return res.json(completedTrade);
     })
     .catch(function(err) {
-        console.log(err.message);
         return res.json({error: err.message});
     });
 }
@@ -256,14 +241,11 @@ function handleRemoveRequest(req, res) {
         if (!book) return res.json({error: 'book does not exist'});
 
         const newRequests = book.requests.filter(request => {
-            console.log(request.username, user.local.username);
             return request.username !== user.local.username;
         });
-        console.log(newRequests);
 
         book.requests = newRequests;
         book.save(function(err, book) {
-            console.log('removed request', book.requests);
             if (err) return ({error: 'db error'});
             return res.json({status: 'removed request'});
         });
@@ -272,7 +254,6 @@ function handleRemoveRequest(req, res) {
 
 function handleRequestBook(req, res) {
     const user = req.user;
-    console.log(user);
 
     // Address check
     if (!user.local.street ||
@@ -319,14 +300,11 @@ function handleRemove(req, res) {
         }
     };
     const options = {};
-    console.log('--- book id remove', id);
     Book.update(query, update, options, function(err, book) {
         if (err) {
-            console.log(err);
             return res.json({error: 'db error remove'});
         }
         
-        console.log('--- removed book', book);
         return res.json({status: 'removed'});
     });
     
@@ -380,7 +358,6 @@ function handleMyBooks(req, res) {
                 return res.json({books: book, userInfo: userInfo});
             })
             .catch(function(err) {
-                console.log('db error', err);
                 return res.json({error: 'db error'});
             });
          
@@ -401,7 +378,6 @@ function handleAddBook(req, res) {
             if (err) return res.json({error: 'db error'});
             
             if (!book) {
-                console.log('---- Adding new book');
                 const newBook = new Book();
                 newBook.eTag = userBook.eTag;
                 newBook.id = userBook.id;
@@ -413,7 +389,6 @@ function handleAddBook(req, res) {
                 });
                 newBook.save(handleSave);
             } else {
-                console.log('--- Updating existing book');
                 book.owners.push({
                     id: user._id,
                     username: user.local.username

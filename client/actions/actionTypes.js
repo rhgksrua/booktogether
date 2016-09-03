@@ -18,3 +18,4 @@ export const GET_TRADE = 'GET_TRADE';
 export const COMPLETE_TRADE = 'COMPLETE_TRADE';
 export const SIGN_UP_ERRORS = 'SIGN_UP_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+export const LOG_IN_ERRORS = 'LOG_IN_ERRORS';

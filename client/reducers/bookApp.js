@@ -13,6 +13,7 @@ import {
     TRADE,
     GET_TRADE,
     SIGN_UP_ERRORS,
+    LOG_IN_ERRORS,
     CLEAR_ERRORS,
 } from '../actions/actionTypes';
 
@@ -124,13 +125,14 @@ function userTrade(state = [], action) {
 function accountErrors(state = {}, action) {
     switch(action.type) {
         case SIGN_UP_ERRORS:
-            console.log('reducer errors', action.errors);
             return Object.assign({}, state, action.errors, {errorsExist: true});
         case ADD_USER_INFO:
             // On sign up success, all errors gets wiped out.
             return {};
         case CLEAR_ERRORS:
             return {};
+        case LOG_IN_ERRORS:
+            return Object.assign({}, {logInErrors: true});
         default:
             return state;
     }

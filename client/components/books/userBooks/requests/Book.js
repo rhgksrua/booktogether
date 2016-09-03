@@ -12,7 +12,6 @@ class Book extends React.Component {
                 <div>NO BOOKS YET</div>
             );
         }
-        console.log('---- user books props', this.props);
         return (
             <li className='collection-item avatar'>
                 {book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail &&

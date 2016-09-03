@@ -10,7 +10,6 @@ class Me extends React.Component {
         this.handleZip = this.handleZip.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         const userInfo = this.props.userInfo;
-        console.log('const Me', userInfo);
         this.state = {
             email: userInfo.email,
             street: userInfo.street,
@@ -19,6 +18,7 @@ class Me extends React.Component {
         };
     }
     componentDidMount() {
+        // focus on first input element
         ReactDOM.findDOMNode(this.refs.userInput).focus();
     }
     componentWillReceiveProps(nextProps) {
@@ -60,11 +60,16 @@ class Me extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className='input-field'>
                         <p>email</p>
-                        <input value={this.state.email} id='email' ref='userInput' type='text' onChange={this.handleEmail}/>
+                        <div className='white-text card-panel blue darken-1'>{this.state.email}</div>
                     </div>
                     <div className='input-field'>
+                        <p>username</p>
+                        <div className='white-text card-panel blue darken-1'>{this.props.userInfo.username}</div>
+                    </div>
+
+                    <div className='input-field'>
                         <p>street</p>
-                        <input value={this.state.street} type='text' onChange={this.handleStreet}/>
+                        <input value={this.state.street} type='text' ref='userInput' onChange={this.handleStreet}/>
                     </div>
                     <div className='input-field'>
                         <p>city</p>

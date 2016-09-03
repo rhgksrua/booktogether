@@ -6,7 +6,6 @@ class Trade extends React.Component {
         this.completeTrade = this.completeTrade.bind(this);
     }
     completeTrade(e) {
-        //console.log("111111111111", this.props);
         this.props.completeTrade(this.props.tradeId, this.props.owned);
     }
     render() {

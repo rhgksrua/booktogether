@@ -3,7 +3,10 @@ import { logInFetch } from '../../actions/actions';
 import LogIn from './LogIn';
 
 const mapStateToProps = (state, props) => {
-    return {};
+    const { accountErrors } = state;
+    return {
+        accountErrors,
+    };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {

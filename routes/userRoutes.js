@@ -57,6 +57,20 @@ module.exports = function(passport) {
         });
     }
     
+    /**
+     * handleLogInSuccess
+     *
+     * Errors do not specify if email or password is incorrect.
+     * Errors only state if login succeeded or failed.
+     * If login fails client will receive 401.  This is handled by passportjs.
+     *
+     * Alternative implementation would involve just using 'req.login()',
+     * which would be more simple.
+     *
+     * @param req
+     * @param res
+     * @returns {undefined}
+     */
     function handleLogInSuccess(req, res) {
         const user = req.user.local;
         let userInfo = {
@@ -105,7 +119,6 @@ module.exports = function(passport) {
      * @returns {undefined}
      */
     function handleSignUpSuccess(req, res) {
-        console.log('handle signup');
         let userInfo = {
             email: req.user.local.email,
             first: req.user.local.first,
@@ -114,8 +127,6 @@ module.exports = function(passport) {
         };
         // manually setting cookies for users
         req.logIn(req.user, function(err) {
-            console.log('__________________________');
-            console.log('error from passport:', err);
             if (err) {
                 // err contains error message from passport.js
                 // err.username - username exists.

@@ -30,7 +30,6 @@ const auth = (nextState, replace) => {
     // 
     // All the routes that need user authentication will not be seen by unregistered users
     // unless they type thr url in the browser.
-    // console.log('--- getstate', store.getState());
 };
 
 ReactDOM.render((

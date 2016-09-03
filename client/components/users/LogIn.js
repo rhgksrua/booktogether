@@ -9,11 +9,13 @@ class LogIn extends React.Component {
             emailError: '',
             password: '',
             passwordError: '',
+            errors: '',
         };
         this.handleEmail = this.handleEmail.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
     handleEmail(e) {
         this.setState({
             email: e.target.value,
@@ -54,6 +56,11 @@ class LogIn extends React.Component {
                         />
                     </div>
                     <button className='btn waves-effect waves-light' type='submit' value='sign up'>Submit</button>
+                    {this.props.accountErrors && this.props.accountErrors.logInErrors &&
+                    <div className='white-text card-panel red lighten-2'>
+                        Username and/or password incorrect
+                    </div>
+                    }
                 </form>
             </div>
         );

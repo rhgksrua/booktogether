@@ -30,7 +30,6 @@ module.exports = function(passport) {
             User.find(query).exec()
                 .then(function(users) {
                     let errors = {};
-                    console.log(users);
                     users.forEach(function(user) {
                         // Creating custom errors.
                         // req.Login callback function will be invoked with 'errors'
@@ -41,7 +40,6 @@ module.exports = function(passport) {
                             errors.email = 'email exists';
                         }
                     });
-                    console.log(errors);
                     if (errors.username || errors.email) {
                         done(null, false, errors);
                         return null;

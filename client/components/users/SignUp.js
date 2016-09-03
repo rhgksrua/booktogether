@@ -38,8 +38,6 @@ class SignUp extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('will update account errors', this.props.accountErrors);
-        console.log('will update next props', nextProps);
         if (nextProps.accountErrors && nextProps.accountErrors.errorsExist) {
             this.setState({
                 emailError: nextProps.accountErrors.email || '',
@@ -136,10 +134,6 @@ class SignUp extends React.Component {
         const firstClass = classNames({'invalid': this.state.firstError});
         const lastClass = classNames({'invalid': this.state.lastError});
         const passwordClass = classNames({'invalid': this.state.passwordError});
-
-        // accounts Error
-        console.log('*** accountErrors', this.props.accountErrors.errorsExist);
-
 
         return (
             <div>

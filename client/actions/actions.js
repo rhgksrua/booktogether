@@ -9,6 +9,7 @@ import {
     ADD_USER_INFO,
     ADD_ADDRESS,
     SIGN_UP_ERRORS,
+    LOG_IN_ERRORS,
     CLEAR_ERRORS,
 } from './actionTypes';
 
@@ -107,6 +108,12 @@ export const signUpFetch = userInfo => {
     };
 };
 
+export const logInErrors = (errors) => {
+    return {
+        type: LOG_IN_ERRORS,
+    };
+}
+
 export const logInFetch = userInfo => {
     return dispatch => {
         return fetch(
@@ -121,17 +128,17 @@ export const logInFetch = userInfo => {
             }
         )
         .then(data => {
+            if (data.status >= 400) {
+                throw new Error('Login errors');
+            }
             return data.json();
         })
         .then(userInfo => {
-            if (userInfo.error) {
-                throw new Error(userInfo.error);
-            }
-            console.log('---- login fetch', userInfo);
             dispatch(userBooksFetch());
             browserHistory.push('/mybooks');
         })
         .catch(err => {
+            dispatch(logInErrors());
             console.warn(err);
         });
     };

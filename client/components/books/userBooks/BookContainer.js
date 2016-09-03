@@ -9,11 +9,9 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         addMyBook: book => {
-            console.log('sending to server', book);
             dispatch(addMyBookFetch(book));
         },
         removeMyBook: id => {
-            console.log('removing book');
             dispatch(removeMyBookFetch(id));
         }
     };

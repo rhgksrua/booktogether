@@ -11,7 +11,6 @@ class TradeList extends React.Component {
     render() {
         const userTrade = this.props.userTrade;
         const username = this.props.userInfo.username;
-        console.log('this.props', this.props);
         let trades = userTrade.map(trade => {
             const owned = username === trade.owner.username ? true : false;
             return (

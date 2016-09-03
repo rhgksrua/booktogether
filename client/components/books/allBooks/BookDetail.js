@@ -3,7 +3,6 @@ import React from 'react';
 class BookDetail extends React.Component {
     constructor(props) {
         super(props);
-        console.log('--- inside book detail props', props);
         this.getBook = this.getBook.bind(this);
         this.checkUserBooks = this.checkUserBooks.bind(this);
         this.userOwned = this.userOwned.bind(this);
@@ -56,7 +55,6 @@ class BookDetail extends React.Component {
         let book = this.getBook(id);
         let userOwned = this.userOwned();
         const addressExists = this.checkAddress();
-        console.log('address exists', addressExists);
         if (!book) {
             return (
                 <div className='progress'>

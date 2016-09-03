@@ -41,7 +41,6 @@ export const allBooksFetch = () => {
             if (books.error) {
                 throw new Error(books.error);
             }
-            //console.log('---- all books', books);
             dispatch(addAllBooks(books.books));
         })
         .catch(err => {
@@ -75,7 +74,6 @@ export const searchBookFetch = title => {
             if (books.error) {
                 throw new Error(books.error);
             }
-            console.log('---- search results');
             dispatch(addSearchResults(books.items));
         })
         .catch(err => {
@@ -112,7 +110,6 @@ export const addMyBookFetch = book => {
             if (book.error) {
                 throw new Error(book.error);
             }
-            console.log('book add ajax response', status);
             dispatch(addMyBook(book));
         })
         .catch(err => {
@@ -148,7 +145,6 @@ export const userBooksFetch = () => {
             if (books.error) {
                 throw new Error(books.error);
             }
-            console.log('book fetch ajax response', books.books);
             dispatch(addUserInfo(books.userInfo));
             dispatch(addAllMyBooks(books.books));
         })
@@ -186,7 +182,6 @@ export const removeMyBookFetch = id => {
             if (books.error) {
                 throw new Error(books.error);
             }
-            console.log('book fetch ajax response', books.books);
             dispatch(removeMyBook(id));
         })
         .catch(err => {
@@ -224,8 +219,6 @@ export const requestBookFetch = (id, username) => {
             if (books.error) {
                 throw new Error(books.error);
             }
-            console.log('--- requestBook response', books);
-            console.log('**** username', username);
             dispatch(requestBook(id, username));
         })
         .catch(err => {
@@ -264,7 +257,6 @@ export const removeRequestFetch = (id, username) => {
             if (status.error) {
                 throw new Error(books.error);
             }
-            console.log('--- requestBook response', status);
             dispatch(removeRequest(id, username));
         })
         .catch(err => {
@@ -372,7 +364,6 @@ export const completeTradeFetch = (tradeId, owned) => {
             if (status.error) {
                 throw new Error(status.error);
             }
-            console.log('^^^^ status', status);
             //dispatch(getTrade(tradeObj.trades));
         })
         .catch(err => {

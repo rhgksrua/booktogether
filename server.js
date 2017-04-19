@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
     const mongo_express_config = require('./mongoExpressConfig')
     app.use('/mongoexpress', mongo_express(mongo_express_config));
 } else {
-    MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || process.env.IP + "/booktogether";
+    MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'localhost:27017/booktogether';
 }
 
 mongoose.connect(MONGO_URI);
